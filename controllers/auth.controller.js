@@ -3,8 +3,8 @@ import apiError from "../utils/apiError.js";
 import {User} from "../models/user.model.js"
 
 function isValidEmail(email){
-    const re =  /\S+@\S+\.\S+/;
-    return re.test(email)
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
 }
 
 function isStrongPassword(password){

@@ -12,35 +12,41 @@ function Header() {
     <Navbar className='border-b-4'>
         <Link 
             to="/" 
-            className='whitespace-nowrap self-center text-[#A4A6A1] text-sm sm:text-xl  font-semibold '>
-            <span className='px-2 py-1 bg-gradient-to-r from-[#202426] via-[#383D40] to-[#6F7372] rounded-lg'>AKGEC</span>
+            className='whitespace-nowrap self-center font-logo_font  text-[#27374D] text-sm  sm:text-xl  font-semibold '>
+            <span className=' px-2  py-1  bg-[#27374D]  text-[#DDE6ED] rounded-lg'>AKGEC</span>
             -FC
         </Link>
 
-
-        <form>
-            <TextInput
-                type="text"
-                placeholder="Search ..... "
-                rightIcon={FaSearch}
-                className='hidden  lg:inline'
-            />            
-        </form>
-
-        <Button className= "w-12 h-10 lg:hidden" color='gray' pill>
-            <FaSearch/>
-        </Button>
-
         <div className='flex gap-2 md:order-2'>
-        <Button className= "w-12 h-10 hidden sm:inline" color='gray' pill>
+        <Button className= "w-12 h-10 hidden border-0 sm:inline" color='gray' >
             <FaMoon/>
         </Button>
 
-        <Link to='/signin'>
-            <Button color='gray' >
-                Sign In
+
+        <Button className= "w-12 h-10 rounded-lg  lg:hidden" color='gray' >
+            <FaSearch/>
+        </Button>
+
+        <form >
+            <TextInput 
+            
+                type="text"
+                placeholder="Search ..... "
+                rightIcon={FaSearch}
+                className='hidden  lg:inline '
+               
+            />            
+        </form>
+        
+
+        <Link to='/signup'>
+            <Button className='border-[#DDE6ED] bg-[#27374D] text-[#DDE6ED] hover:text-[#27374D] transition duration-100'color='gray' >
+                Sign Up
             </Button>
         </Link>
+
+        
+
         <Navbar.Toggle className='lg:hidden' />
         </div>
         <Navbar.Collapse>
