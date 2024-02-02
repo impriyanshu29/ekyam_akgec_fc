@@ -1,27 +1,28 @@
 import React, {useState} from 'react'
 import {Link ,useNavigate} from 'react-router-dom'
 import {Spinner} from 'flowbite-react' 
+import {useDispatch,useSelector} from 'react-redux';
+import { signInFail,signInSucess,signInStart } from '../redux/function/userSlice';
 
 function signin() {
 const [formData, setFormData] = useState({});
-const [error,setError] = useState(null);
-const [loading, setLoading] = useState(false);
+const {loading,error} = useSelector(state => state.user);
 const navigate = useNavigate();
+const dispatch = useDispatch();
+
+
+
 
   const handleChange = (e) => {
     setFormData({...formData,[e.target.id]:e.target.value})
-    console.log(formData);
+  
   }
   
-  console.log('====================================');
-  console.log(formData);
-  console.log('====================================');
-  const handleSubmit = async (e) =>{
+ const handleSubmit = async (e) =>{
     
     e.preventDefault();
     try{
-      setError(null);
-    setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('/api/auth/signin',{
         method:'POST',
         headers:{
@@ -29,24 +30,22 @@ const navigate = useNavigate();
         },
         body:JSON.stringify(formData)
       });
-      if(!res.ok){
-        const errorData = await res.json();
-        setError(errorData.error||'An Error Occured')
-        setLoading(false)
+
+      const data = await res.json();
+
+      if(data.sucess === false){
+        dispatch(signInFail(data.error));
       }
+
       if(res.ok){
+        dispatch(signInSucess(data));
         navigate('/')
       }
 
-      const data = await res;
-      setLoading(false);
     }catch(error){
-      console.log(error);
+      dispatch(signInFail('An error occurred.'));
     }
 
-    console.log('====================================');
-    console.log(formData);
-    console.log('====================================');
   }
   return (
     <section>

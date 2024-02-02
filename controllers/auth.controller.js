@@ -76,8 +76,12 @@ export const signup = asyncHandler(async(req,res)=>{
 
 export const signin = asyncHandler(async(req,res)=>{
     const {email,password,username} = req.body;
-    if(!username||!password||username==" "||password==" " ){
+    if(!username &&!email||username==" "&&email==''){
         throw new apiError(400,"Username or Email is required")
+    }
+
+    if(!password||password==" " ){
+        throw new apiError(400,"Password field is required")
     }
 
     const user = await User.findOne({
