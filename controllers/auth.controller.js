@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import apiError from "../utils/apiError.js";
 import {User} from "../models/user.model.js"
-
+import { apiResponse } from "../utils/apiResponse.js";
 function isValidEmail(email){
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
@@ -14,6 +14,22 @@ function isStrongPassword(password){
     const special = /[@,#,$,%,&,*]/.test(password);
     const length = password.length >= 8;
     return lowercase && uppercase && number && special && length;
+}
+
+const generate_acessToken_and_refreshToken = async(userId)=>{
+    try{
+        const user = await User.findById(userId)
+        const accessToken = await user.generateAcessToken();
+        const refreshToken = await user.generateRefreshToken();
+        
+        user.refreshToken = refreshToken
+        await user.save({validateBeforeSave:false})
+        return{accessToken,refreshToken}
+    }
+    catch(error){
+        throw new apiError(500, "Something went wrong")
+        console.log(error);
+    }
 }
 
 
@@ -44,6 +60,58 @@ export const signup = asyncHandler(async(req,res)=>{
         password
     })
 
+    const createdUser = await User.findById(user._id).select(
+        "-password -refreshToken"
+    )
+      if(!createdUser){
+        throw new apiError(500,"Something went wrong")
+    }
+
     await user.save();
-    res.json({message : "Signup sucessfully"})
+    return res.status(201).json(
+        new apiResponse(200,createdUser,"User register succesfully ")
+    )
+
 })
+
+export const signin = asyncHandler(async(req,res)=>{
+    const {email,password,username} = req.body;
+    if(!username||!password||username==" "||password==" " ){
+        throw new apiError(400,"Username or Email is required")
+    }
+
+    const user = await User.findOne({
+        $or:[{username},{email}]
+    })
+    if(!user){
+        throw new apiError(401,"User did not found")
+    }
+
+    const isPasswordMatch = await user.isPasswordMatch(password)
+    if(!isPasswordMatch){
+        throw new apiError(401,"Wrong Password")
+    }
+    const {accessToken,refreshToken} = await generate_acessToken_and_refreshToken(user._id)
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+    const options = {
+        httpOnly:true,
+        secure : true
+    }
+
+    return res
+    .status(200)
+    .cookie("acessToken", accessToken,options)
+    .cookie("refreshToken" , refreshToken, options)
+    .json(
+        
+        new apiResponse(
+            200,
+            {
+                user:loggedInUser,accessToken,refreshToken
+            },
+            "logged in sucessfully"
+        )
+    )
+})
+

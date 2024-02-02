@@ -9,7 +9,7 @@ import { FaMoon } from "react-icons/fa6";
 function Header() {
     const path = useLocation().pathname
   return (
-    <Navbar className='border-b-4'>
+    <Navbar className='border-b-2 border-[#DDE6ED]'>
         <Link 
             to="/" 
             className='whitespace-nowrap self-center font-logo_font  text-[#27374D] text-sm  sm:text-xl  font-semibold '>
@@ -27,7 +27,7 @@ function Header() {
             <FaSearch/>
         </Button>
 
-        <form >
+        <form  className='border-[#DDE6ED] ' >
             <TextInput 
             
                 type="text"

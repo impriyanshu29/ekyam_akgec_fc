@@ -1,7 +1,53 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, {useState} from 'react'
+import {Link ,useNavigate} from 'react-router-dom'
+import {Spinner} from 'flowbite-react' 
 
 function signin() {
+const [formData, setFormData] = useState({});
+const [error,setError] = useState(null);
+const [loading, setLoading] = useState(false);
+const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({...formData,[e.target.id]:e.target.value})
+    console.log(formData);
+  }
+  
+  console.log('====================================');
+  console.log(formData);
+  console.log('====================================');
+  const handleSubmit = async (e) =>{
+    
+    e.preventDefault();
+    try{
+      setError(null);
+    setLoading(true);
+      const res = await fetch('/api/auth/signin',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(formData)
+      });
+      if(!res.ok){
+        const errorData = await res.json();
+        setError(errorData.error||'An Error Occured')
+        setLoading(false)
+      }
+      if(res.ok){
+        navigate('/')
+      }
+
+      const data = await res;
+      setLoading(false);
+    }catch(error){
+      console.log(error);
+    }
+
+    console.log('====================================');
+    console.log(formData);
+    console.log('====================================');
+  }
   return (
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
@@ -27,7 +73,7 @@ function signin() {
             </Link>
           </p>
         
-          <form  className="mt-8">
+          <form  className="mt-8" onSubmit={handleSubmit}>
             <div className="space-y-5">
               <div>
                 <label htmlFor="" className="text-base font-medium font-body_font  text-[#27374D]">
@@ -37,8 +83,10 @@ function signin() {
                 <div className="mt-2">
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                    type="email"
-                    placeholder="Email"
+                    type="text"
+                    placeholder="Email or Username"
+                    id="username"
+                    onChange={handleChange}
                   ></input>
                 </div>
               </div>
@@ -58,19 +106,30 @@ function signin() {
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="password"
                     placeholder="Password"
+                    id='password'
+                    onChange={handleChange}
                   ></input>
                 </div>
               </div>
               <div>
                 <button
-                  type="button"
+                  type="submit"
                   className="inline-flex w-full items-center justify-center rounded-md bg-[#27374D]  px-3.5 py-2.5 font-semibold leading-7 text-[#DDE6ED] hover:bg-[#DDE6ED] hover:text-[#27374D] transition-all duration-200"
+                  disabled={loading}
                 >
-                  Get started 
+                  {
+                    loading ? (
+                      <>
+                        <Spinner size='sm'/>
+                        <span className='pl-4'>Loging in...</span>
+                      </>
+                    ):'Get Started'
+                  }
                 </button>
               </div>
             </div>
           </form>
+          {error && <p className='text-red-500'>{error}</p>}
           <div className="mt-3 space-y-3">
             <button
               type="button"
