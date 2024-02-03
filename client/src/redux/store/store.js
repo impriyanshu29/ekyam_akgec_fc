@@ -3,11 +3,15 @@ import userReducer from '../function/userSlice'
 import {persistReducer,persistStore} from 'redux-persist';
 import { version } from 'react';
 import storage from 'redux-persist/lib/storage'
+import themeReducer from '../function/themeSlice'
+
+
 
 
 
 const rootReducer = combineReducers({
     user:userReducer,
+    theme:themeReducer
 });
 
 const persistConfig ={

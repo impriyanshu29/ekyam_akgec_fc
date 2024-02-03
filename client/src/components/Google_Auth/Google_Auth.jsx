@@ -44,13 +44,13 @@ function Google_Auth() {
   return (
     <button
       type="button"
-      className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5  font-body_font  text-[#27374D] bg-gray-100 transition-all duration-200 hover:bg-gray-300 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
+      className="relative dark:text-[#0F1926] dark:bg-[#BFCDD9] inline-flex w-full items-center justify-center rounded-md border border-gray-400  px-3.5 py-2.5  font-body_font  text-[#27374D] bg-gray-100 transition-all duration-200 hover:bg-gray-300 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
       onClick={handleGoogleAuth}
     >
       <span className="mr-2 inline-block">
         <FaGoogle className="text-red-700" />
       </span>
-              Continue with Google Baba
+              Continue with Google 
     </button>
   );
 }
