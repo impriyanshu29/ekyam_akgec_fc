@@ -11,7 +11,8 @@ import About from "./pages/About.jsx";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
-import {ThemeProvider} from  '../src/components/Theme/ThemeProvider.jsx'
+import { ThemeProvider } from "../src/components/Theme/ThemeProvider.jsx";
+import Private_Route from "./components/PrivateRoute/Private_Route.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,9 +30,16 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
+
       {
         path: "/dashboard",
-        element: <DashBoard />,
+        element: <Private_Route />,
+        children: [
+          {
+            index: true,
+            element: <DashBoard />,
+          },
+        ],
       },
       {
         path: "/about",
@@ -45,7 +53,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <PersistGate persistor={persistor}>
       <Provider store={store}>
         <ThemeProvider>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </ThemeProvider>
       </Provider>
     </PersistGate>
