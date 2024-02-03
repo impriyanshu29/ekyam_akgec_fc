@@ -144,7 +144,7 @@ const generate_acessToken_and_refreshToken = async (userId) => {
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     export const google = asyncHandler(async(req,res)=>{
         const {name,email,googlePhoto} = req.body;
-       
+     
         try{
             const user = await User.findOne({email})
         
@@ -180,7 +180,7 @@ const generate_acessToken_and_refreshToken = async (userId) => {
                     username:name.toLowerCase().split(' ').join('')+Math.random().toString(9).slice(-5),
                     email,
                     password:newPassword,
-                    coverimage:googlePhoto,
+                    coverImage:googlePhoto,
                 })
 
                 

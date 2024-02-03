@@ -1,13 +1,17 @@
 import React from 'react'
 import { Link,useLocation} from 'react-router-dom'
-import {Button, Navbar, TextInput} from 'flowbite-react'
+import {Button, Navbar, TextInput,Dropdown, Avatar} from 'flowbite-react'
 import { FaSearch } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa6";
+import {useSelector} from 'react-redux';
 
 
 
 function Header() {
+    const {currentUser} = useSelector(state => state.user)
     const path = useLocation().pathname
+
+
   return (
     <Navbar className='border-b-2 border-[#DDE6ED]'>
         <Link 
@@ -38,13 +42,65 @@ function Header() {
             />            
         </form>
         
+        {currentUser?(
+           <Dropdown 
+           className='relative inline-block rounded-lg text-left'
+           arrowIcon={false}
+           inline
+           label={
+               <Avatar
+                   alt='User'
+                   img={currentUser.message.user.coverImage}
+                   rounded
+               />
+           }
+       >
+           <Dropdown.Header className='bg-[#27374D] text-[#DDE6ED] font-heading_font p-4 border-b rounded-lg border-gray-700'>
+               <div className='flex items-center'>
+                   <Avatar
+                       alt='User'
+                       img={currentUser.message.user.coverImage}
+                       rounded
+                       className='mr-2'
+                   />
+                   <div>
+                       <span className='block text-lg font-bold'>
+                           {currentUser.message.user.username}
+                       </span>
+                       <span className='block text-sm'>
+                           {currentUser.message.user.email}
+                       </span>
+                   </div>
+               </div>
+           </Dropdown.Header>
+       
+           <Link to='/dashboard?tab=profile'>
+               <Dropdown.Item className='hover:bg-gray-700 hover:text-yellow-400 p-4'>
+                   Profile
+               </Dropdown.Item>
+           </Link>
+       
+           <Dropdown.Divider />
+       
+           <Dropdown.Item className='hover:bg-gray-700 hover:text-red-500 p-4'>
+               Logout
+           </Dropdown.Item>
+       </Dropdown>
+       
 
-        <Link to='/signup'>
-            <Button className='border-[#DDE6ED] bg-[#27374D] text-[#DDE6ED] hover:text-[#27374D] transition duration-100'color='gray' >
-                Sign Up
-            </Button>
-        </Link>
-
+        ):(
+                <Link to='/signin'>
+                <Button className='border-[#DDE6ED] bg-[#27374D] text-[#DDE6ED] hover:text-[#27374D] transition duration-100'color='gray' >
+                    Sign In
+                </Button>
+                </Link>
+        )}
+        
+                {/* <Link to='/signin'>
+                <Button className='border-[#DDE6ED] bg-[#27374D] text-[#DDE6ED] hover:text-[#27374D] transition duration-100'color='gray' >
+                    Sign In
+                </Button>
+                </Link> */}
         
 
         <Navbar.Toggle className='lg:hidden' />
