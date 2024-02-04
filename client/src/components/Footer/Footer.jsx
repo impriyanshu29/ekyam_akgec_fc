@@ -93,6 +93,33 @@ function Footer() {
           </span>
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
 
+            <Link to="https://www.facebook.com/iampriyanshu29" className="text-gray-500 hover:text-[#27374D] ">
+              <FaFacebook
+              style={{
+                fontSize: '1.5rem', 
+              }}
+              />
+            </Link>
+            <Link to="https://www.instagram.com/iampriyanshu29" className="text-gray-500 hover:text-[#27374D]">
+                <FaInstagram style={{
+                  fontSize: '1.5rem', 
+                }}/>
+            </Link>
+            <Link to="https://www.linkedin.com/in/iampriyanshu29/" className="text-gray-500 hover:text-[#27374D]">
+                <AiFillLinkedin
+                style={{
+                  fontSize: '1.5rem', 
+                }}
+                />
+            </Link>
+            <Link to="#" className="text-gray-500 hover:text-[#27374D]">
+             <FaGithub
+             style={{
+              fontSize: '1.5rem', 
+            }}
+             />
+            </Link>
+          
           </div>
         </div>
       </div>

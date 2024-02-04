@@ -7,7 +7,7 @@ export function ThemeProvider({ children }) {
   console.log('Current Theme:', currentTheme);
   return (
     <div className={currentTheme}>
-      <div className='bg-gray-50 dark:bg-[#04080D]'>
+      <div className='bg-gray-50 dark:bg-neutral-950'>
         {children}
       </div>
     </div>

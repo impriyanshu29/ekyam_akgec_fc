@@ -14,11 +14,12 @@ function Header() {
   const dispatch = useDispatch();
 
   const handleTheme = () => {
+    console.log("Theme Changed!");
     dispatch(changeTheme());
   };
 
   return (
-    <Navbar className= 'dark:bg-[#04080D] dark:text-[#BFCDD9] '>
+    <Navbar className= 'dark:bg-neutral-950 dark:text-[#BFCDD9] '>
       <Link to="/" className={`whitespace-nowrap self-center font-logo_font text-${currentTheme === 'dark' ? '#BFCDD9' : '[#27374D]'} text-sm sm:text-xl font-semibold`}>
         <span className='px-2 py-1  dark:bg-[#364559] bg-[#27374D] text-[#DDE6ED] rounded-lg'>AKGEC</span>
         -FC
@@ -26,8 +27,8 @@ function Header() {
 
       <div className="flex gap-2 md:order-2">
         <Button
-          className="w-12 h-10 hidden border-0 sm:inline"
-          color="gray"
+          className="w-12 h-10 hover:bg-gray-100 hover:text-gray-700 hidden border-0 sm:inline"
+          color='#F5F5F'
           onClick={handleTheme}
         >
          {currentTheme === 'dark' ? <FaMoon /> : <IoSunnySharp />}
@@ -59,8 +60,8 @@ function Header() {
               />
             }
           >
-            <Dropdown.Header className=' dark:bg-[#0F1926] bg-[#27374D] text-[#DDE6ED] font-heading_font p-5  border-b -mt-1 rounded-lg   border-gray-700'>
-              <div className="flex items-center">
+            <Dropdown.Header className=' dark:bg-[#0F1926] bg-[#27374D] text-[#DDE6ED] font-heading_font p-4  -mt-1 border dark:border-[#0F1926] rounded-lg '>
+              <div className="flex p-2 items-center">
                 <Avatar
                   alt="User"
                   img={currentUser.message.user.coverImage}
@@ -79,7 +80,7 @@ function Header() {
             </Dropdown.Header>
 
             <Link to="/dashboard?tab=profile">
-              <Dropdown.Item className={`hover:bg-gray-700 hover:text-${currentTheme === 'dark' ? 'yellow-400' : 'yellow-400'} p-4`}>
+              <Dropdown.Item className='hover:bg-gray-100 hover:text-gray-700 p-4'>
                 Profile
               </Dropdown.Item>
             </Link>
