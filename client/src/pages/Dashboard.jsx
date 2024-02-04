@@ -17,7 +17,7 @@ function Dashboard() {
     }
     
   }, [location.search]);
-  return <div>
+  return <div className='md:flex '>
     <div className=''>
       <Sidebar/>
   </div>

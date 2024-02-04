@@ -27,7 +27,7 @@ function Sidebar() {
 
   return (
     <aside
-      className={`flex md:h-screen h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
+      className={`flex md:h-screen shadow-md h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
         currentTheme === "dark" ? "scrollbar-dark" : ""
       }`}
     >
@@ -50,10 +50,10 @@ function Sidebar() {
       </style>
     
 
-      <div className="mt-6 flex flex-1 flex-col justify-between">
+      <div className="mt-6 text-center md:text-left flex flex-1 flex-col justify-between">
         <nav className="-mx-3 space-y-6">
           <div className="space-y-3">
-            <label className="px-3 text-xs font-semibold uppercase dark:text-[#BFCDD9] text-gray-900">
+            <label className="px-3 text-center  text-xs font-semibold uppercase dark:text-[#BFCDD9] text-gray-900">
               Dashboard
             </label>
             <NavLink

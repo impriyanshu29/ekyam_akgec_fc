@@ -102,22 +102,18 @@ function Header() {
         <Navbar.Toggle className="lg:hidden" />
       </div>
 
-      <Navbar.Collapse>
-        <Navbar.Link active={path === "/"} as="div">
+      <Navbar.Collapse >
+        <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
           <Link to="/">
             Home
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as="div">
+        <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
           <Link to="/about">
             About
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as="div">
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-        </Navbar.Link>
+        
       </Navbar.Collapse>
     </Navbar>
   );
