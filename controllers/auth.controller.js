@@ -198,6 +198,7 @@ const generate_acessToken_and_refreshToken = async (userId) => {
                 const loggedInUser = await User.findById(newUser._id).select(
                     "-password -refreshToken"
                 );
+                
                 const options = {
                     httpOnly: true,
                     secure: true,
@@ -225,6 +226,29 @@ const generate_acessToken_and_refreshToken = async (userId) => {
 
     })
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    export const logout = asyncHandler(async(req,res)=>{
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $set:{
+                    refreshToken:undefined
+                }
+            },{
+                new:true
+            }
+        )
 
+        const options = {
+            httpOnly:true,
+            secure:true,
+            expires:new Date(0)
+        }
+
+        return res
+        .status(200)
+        .clearCookie("acessToken",options)
+        .clearCookie("refreshToken",options)
+        .json(new apiResponse(200,undefined,"Logged out successfully"))
+    })
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
