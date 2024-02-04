@@ -24,13 +24,14 @@ function Sidebar() {
     }
     setPathName(pathName);
   }, [location.search]);
+
   return (
     <aside
-      className={`flex bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C] h-screen w-64 flex-col overflow-y-auto  px-5 py-8 ${
+      className={`flex md:h-screen h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
         currentTheme === "dark" ? "scrollbar-dark" : ""
       }`}
     >
-      <style>
+       <style>
         {`
           .scrollbar-dark::-webkit-scrollbar {
             width: 10px;
@@ -47,6 +48,7 @@ function Sidebar() {
           }
         `}
       </style>
+    
 
       <div className="mt-6 flex flex-1 flex-col justify-between">
         <nav className="-mx-3 space-y-6">
@@ -73,7 +75,8 @@ function Sidebar() {
               <span className="mx-2 text-sm font-medium">Sign Out</span>
             </NavLink>
           </div>
-          <div className="space-y-3">
+         
+          <div className="hidden md:block space-y-3">
             <label className="px-3 text-xs font-semibold uppercase dark:text-[#BFCDD9]  text-gray-900">
               Content
             </label>
@@ -106,7 +109,7 @@ function Sidebar() {
             </NavLink>
           </div>
         </nav>
-        <div className="mt-6">
+        <div className="hidden md:block mt-6">
           <div className="mt-6 ">
             <NavLink
               to="/dashboard?tab=profile"
@@ -118,7 +121,7 @@ function Sidebar() {
                 alt="avatar"
               />
               <span className="text-sm dark:text-[#65768C] dark:hover:text-[#BFCDD9] font-medium text-gray-700">
-               {currentUser.message.user.username}
+                {currentUser.message.user.username}
               </span>
               <div className="text-sm font-medium dark:text-gray-700 dark:bg-gray-200 bg-[#27374D] text-[#DDE6ED] rounded-lg px-2 py-2 ">
                 <span className="dark:text-[#65768C] dark:hover:text-[#BFCDD9]">
