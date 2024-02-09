@@ -3,7 +3,9 @@ import { useSelector } from "react-redux";
 import { TextInput, Button } from "flowbite-react";
 import { app } from "../../firebase/firebase";
 import {getDownloadURL, getStorage, uploadBytesResumable} from 'firebase/storage'
+import { signOutSucess } from "../../redux/function/userSlice";
 import { ref } from 'firebase/storage';
+import { useDispatch } from "react-redux";
 
 
 function Profile() {
@@ -11,7 +13,7 @@ function Profile() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageUploadProgress,setimageUploadProgress] = useState(null)
-  
+  const dispatch = useDispatch();
   
   const [imageFileUploadError, setimageUploadError] = useState(null)
   const fileReference = useRef();
@@ -56,6 +58,24 @@ function Profile() {
     })};
       
     }
+  const handleLogout = async() => {
+    try {
+      const res = await fetch(`/api/auth/logout`,{
+        method:"POST", 
+      })
+      const data = await res.json();
+      if(!res.ok){
+        console.log(data.message);
+      }
+      else{
+        dispatch(signOutSucess());
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   return (
     <div className=" md:w-2/4 dark:bg-[#131314]  mx-auto p-6 lg:p-20 bg-gray-100 dark:text-[#A3B2BF] rounded-md shadow-md">
       <h1 className="text-center text-3xl font-heading_font text-[#27374D] dark:text-[#DDE6ED] mb-7">
@@ -116,7 +136,7 @@ function Profile() {
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span className="cursor-pointer hover:underline">Delete Account</span>
-        <span className="cursor-pointer hover:underline">Sign Out</span>
+        <span  onClick={handleLogout} className="cursor-pointer hover:underline">Sign Out</span>
       </div>
     </div>
   );
