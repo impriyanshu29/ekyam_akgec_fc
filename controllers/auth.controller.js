@@ -149,7 +149,7 @@ const generate_acessToken_and_refreshToken = async (userId) => {
             const user = await User.findOne({email})
         
             if(user){
-                const {accessToken,refreshToken} = generate_acessToken_and_refreshToken(user._id);
+                const {accessToken,refreshToken} = await generate_acessToken_and_refreshToken(user._id);
                 const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
                 const options ={

@@ -5,6 +5,7 @@ import { FaSearch, FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeTheme } from '../../redux/function/themeSlice';
 import { IoSunnySharp } from "react-icons/io5";
+import { signOutSucess } from '../../redux/function/userSlice';
 
 
 function Header() {
@@ -13,6 +14,24 @@ function Header() {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
 
+  const handleLogout = async() => {
+    try {
+      const res = await fetch(`/api/auth/logout`,{
+        method:"POST", 
+      })
+      const data = await res.json();
+      if(!res.ok){
+        console.log(data.message);
+      }
+      else{
+        dispatch(signOutSucess());
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   const handleTheme = () => {
     console.log("Theme Changed!");
     dispatch(changeTheme());
@@ -87,7 +106,7 @@ function Header() {
 
             <Dropdown.Divider />
 
-            <Dropdown.Item className={`hover:bg-gray-700 hover:text-${currentTheme === 'dark' ? 'red-500' : 'red-500'} p-4`}>
+            <Dropdown.Item onClick={handleLogout} className={`hover:bg-gray-700 hover:text-${currentTheme === 'dark' ? 'red-500' : 'red-500'} p-4`}>
               Logout
             </Dropdown.Item>
           </Dropdown>
