@@ -16,20 +16,19 @@ function isStrongPassword(password) {
   return lowercase && uppercase && number && special && length;
 }
 
-export const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res,next) => {
   res.json({
     message: "Api is working !!",
   });
 });
 
 export const updateUser = asyncHandler(async (req, res, next) => {
-    
-
+    console.log(req.user._id.toString(), req.params.userId);
   if (req.user._id.toString() !== req.params.userId) {
     throw new apiError(401, "Unauthorized acess");
   }
   
-
+ 
   if (req.body.password) {
     if (!isStrongPassword(req.body.password)) {
       throw new apiError(
