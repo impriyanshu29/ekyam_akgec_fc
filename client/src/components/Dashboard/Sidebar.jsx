@@ -8,8 +8,11 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { set } from "mongoose";
+import { signOutSucess } from "../../redux/function/userSlice";
+import { useDispatch } from "react-redux";
 
 function Sidebar() {
+  const dispatch = useDispatch();
   const { currentTheme } = useSelector((state) => state.theme);
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -25,6 +28,24 @@ function Sidebar() {
     setPathName(pathName);
   }, [location.search]);
 
+  const handleLogout = async() => {
+    try {
+      const res = await fetch(`/api/auth/logout`,{
+        method:"POST", 
+      })
+      const data = await res.json();
+      if(!res.ok){
+        console.log(data.message);
+      }
+      else{
+        dispatch(signOutSucess());
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   return (
     <aside
       className={`flex md:h-screen shadow-md h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
@@ -72,7 +93,7 @@ function Sidebar() {
               }`}
             >
               <FaSignOutAlt className="h-5 w-5" aria-hidden="true" />
-              <span className="mx-2 text-sm font-medium">Sign Out</span>
+              <span onClick={handleLogout} className="mx-2 text-sm font-medium">Sign Out</span>
             </NavLink>
           </div>
          

@@ -5,6 +5,6 @@ const router = Router();
 
 
 router.get("/test",registerUser)
-router.post("/update/:userId",verifyJWT, updateUser)
+router.put("/update/:userId",verifyJWT, updateUser)
 
 export default router;
