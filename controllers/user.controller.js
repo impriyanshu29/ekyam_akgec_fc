@@ -23,7 +23,7 @@ export const registerUser = asyncHandler(async (req, res,next) => {
 });
 
 export const updateUser = asyncHandler(async (req, res, next) => {
-    console.log(req.user._id.toString(), req.params.userId);
+
   if (req.user._id.toString() !== req.params.userId) {
     throw new apiError(401, "Unauthorized acess");
   }
@@ -39,13 +39,13 @@ export const updateUser = asyncHandler(async (req, res, next) => {
   }
 
   if (req.body.username) {
-    if (req.body.username.length < 7 || req.body.username.length > 14) {
+    if (req.body.username.length < 7 || req.body.username.length > 20) {
       throw new apiError(
         400,
         "Username must be greater than 7 and less than 14"
       );
     }
-  }
+  
   if (req.body.username.includes(" ")) {
     throw new apiError(400, "Username must not contain space");
   }
@@ -61,22 +61,31 @@ export const updateUser = asyncHandler(async (req, res, next) => {
       "Username must contain only alphabets and numbers"
     );
   }
+
+  const username = await User.findOne({ username: trimmedUsername });
+  if (username && username._id.toString() !== req.params.userId) {
+    throw new apiError(400, "Username already exists");
+  }
+}
   if (req.body.email) {
     if (!isValidEmail(req.body.email)) {
       throw new apiError(400, "Please enter a valid email");
     }
   }
+  
 
   try {
+    const updateFields = {
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      coverImage: req.body.coverImage,
+    };
+
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
-        $set: {
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password,
-          coverImage: req.body.coverImage,
-        },
+        $set: updateFields,
       },
       { new: true }
     );

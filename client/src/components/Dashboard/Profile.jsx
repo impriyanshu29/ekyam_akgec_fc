@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import { TextInput, Button } from "flowbite-react";
 import { app } from "../../firebase/firebase";
 import {getDownloadURL, getStorage, uploadBytesResumable} from 'firebase/storage'
-import { signOutSucess } from "../../redux/function/userSlice";
+import {updateFail,updateStart,updateSucess, signOutSucess } from "../../redux/function/userSlice";
 import { ref } from 'firebase/storage';
 import { useDispatch } from "react-redux";
+import { set } from "mongoose";
+import {Spinner} from 'flowbite-react' 
 
 
 function Profile() {
@@ -13,6 +15,7 @@ function Profile() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageUploadProgress,setimageUploadProgress] = useState(null)
+  const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   
   const [imageFileUploadError, setimageUploadError] = useState(null)
@@ -43,21 +46,27 @@ function Profile() {
 
     //to get info how much byte uploaded
     const uploadBytes = uploadBytesResumable(storageRef, image);
-    const uploadTask = uploadBytes.on('state_changed',
+    uploadBytes.on('state_changed',
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setimageUploadProgress(progress.toFixed(0));
       }, (error) => {
         setimageUploadError('Could not upload image (Image < 2mb)');
         setimageUploadProgress(null);
-        setImageUrl(currentUser.message.user.coverImage)
-      });
-
-    ()=>{ getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setImage(null);
+        setImageUrl(null);
+        
+        
+      },
+    ()=>{ getDownloadURL(uploadBytes.snapshot.ref).then((downloadURL) => {
       setImageUrl(downloadURL);
-    })};
+      setFormData({...formData,coverImage:downloadURL});
       
+    })}
+    );
     }
+
+  
   const handleLogout = async() => {
     try {
       const res = await fetch(`/api/auth/logout`,{
@@ -76,12 +85,47 @@ function Profile() {
       
     }
   }
+
+  const handleUpdate = async (e) => {
+    
+     setFormData({...formData,[e.target.id]:e.target.value})
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+   
+    if(Object.keys(formData).length === 0){
+      return;
+    }
+   try {
+    dispatch(updateStart());
+    const res = await fetch(`/api/user/update/${currentUser.message.user._id}`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(formData)
+    })
+
+    const data = await res.json();
+    if(!res.ok){
+      dispatch(updateFail(data.error));
+    }
+    else{
+      dispatch(updateSucess(data));
+    }
+
+   } catch (error) {
+    console.log(error);
+   }
+  }
+
+  const {loading,error} = useSelector(state => state.user);
+
   return (
     <div className=" md:w-2/4 dark:bg-[#131314]  mx-auto p-6 lg:p-20 bg-gray-100 dark:text-[#A3B2BF] rounded-md shadow-md">
       <h1 className="text-center text-3xl font-heading_font text-[#27374D] dark:text-[#DDE6ED] mb-7">
         Profile
       </h1>
-      <form className="flex flex-col gap-7">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-7">
         <input
           type="file"
           accept="image/*"
@@ -103,7 +147,7 @@ function Profile() {
           />
         </div>
         {imageFileUploadError && <p className="text-red-500">{imageFileUploadError}</p>}
-        <TextInput
+        <TextInput onChange={handleUpdate}
           type="text"
           id="username"
           defaultValue={currentUser.message.user.username}
@@ -111,7 +155,7 @@ function Profile() {
           color="gray-100 "
           className="input-field  text-gray-800 hover:text-gray-700 "
         />
-        <TextInput
+        <TextInput onChange={handleUpdate}
           type="email"
           id="email"
           defaultValue={currentUser.message.user.email}
@@ -119,7 +163,7 @@ function Profile() {
           color="gray-100 "
           className="text-gray-800 input-field"
         />
-        <TextInput
+        <TextInput onChange={handleUpdate}
           type="password"
           id="password"
           defaultValue="##############"
@@ -127,12 +171,24 @@ function Profile() {
           color="gray-100"
           className="text-gray-800 input-field"
         />
+         {error && <p className='text-red-500'>{error}</p>}
         <Button
+          
           type="submit"
           className="bg-[#27374D] dark:bg-gray-700 dark:text-gray-200"
+          disabled={loading}
         >
-          Update
+          {
+                    loading ? (
+                      <>
+                        <Spinner size='sm'/>
+                        <span className='pl-4'>Updating...</span>
+                      </>
+                    ):'Update Profile'
+                  }
         </Button>
+
+       
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span className="cursor-pointer hover:underline">Delete Account</span>

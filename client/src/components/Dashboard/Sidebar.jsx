@@ -10,6 +10,10 @@ import { useEffect, useState } from "react";
 import { set } from "mongoose";
 import { signOutSucess } from "../../redux/function/userSlice";
 import { useDispatch } from "react-redux";
+import { GiPodiumWinner } from "react-icons/gi";
+
+import { GiBabyfootPlayers } from "react-icons/gi";
+
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -118,6 +122,24 @@ function Sidebar() {
             >
               <FaBox className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">About</span>
+            </NavLink>
+            <NavLink
+              to="/family"
+              className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                pathName === "/family" ? "bg-gray-200 text-gray-800" : ""
+              }`}
+            >
+              <GiBabyfootPlayers className="h-5 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium">Family</span>
+            </NavLink>
+            <NavLink
+              to="/achievements"
+              className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                pathName === "/achievements" ? "bg-gray-200 text-gray-800" : ""
+              }`}
+            >
+              <GiPodiumWinner className="h-5 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium">Achievements</span>
             </NavLink>
             <NavLink
               to="/dashboard?tab=profile"

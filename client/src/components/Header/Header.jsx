@@ -132,6 +132,16 @@ function Header() {
             About
           </Link>
         </Navbar.Link>
+        <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
+          <Link to="/family">
+            Family
+          </Link>
+        </Navbar.Link>
+        <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
+          <Link to="/achievements">
+            Achievements
+          </Link>
+        </Navbar.Link>
         
       </Navbar.Collapse>
     </Navbar>
