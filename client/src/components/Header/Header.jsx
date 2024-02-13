@@ -106,6 +106,16 @@ function Header() {
 
             <Dropdown.Divider />
 
+            {currentUser.message.user.isAdmin  &&
+            (<Link to="/createpost">
+              <Dropdown.Item className='hover:bg-gray-100 hover:text-gray-700 p-4'>
+                Post
+              </Dropdown.Item>
+            </Link>)
+              }
+
+            <Dropdown.Divider />
+
             <Dropdown.Item onClick={handleLogout} className={`hover:bg-gray-700 hover:text-${currentTheme === 'dark' ? 'red-500' : 'red-500'} p-4`}>
               Logout
             </Dropdown.Item>
@@ -122,23 +132,23 @@ function Header() {
       </div>
 
       <Navbar.Collapse >
-        <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-          <Link to="/">
+        <Navbar.Link  as="div" className='sm:text-center hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
+          <Link to="/" className='ml-auto mr-auto block text-center ' >
             Home
           </Link>
         </Navbar.Link>
         <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-          <Link to="/about">
+          <Link to="/about" className='ml-auto mr-auto block text-center '>
             About
           </Link>
         </Navbar.Link>
         <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-          <Link to="/family">
+          <Link to="/family"className='ml-auto mr-auto block text-center '>
             Family
           </Link>
         </Navbar.Link>
         <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-          <Link to="/achievements">
+          <Link to="/achievements" className='ml-auto mr-auto block text-center '>
             Achievements
           </Link>
         </Navbar.Link>

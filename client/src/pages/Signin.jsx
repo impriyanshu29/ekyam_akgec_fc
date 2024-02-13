@@ -42,7 +42,7 @@ const dispatch = useDispatch();
 
       if(res.ok){
         dispatch(signInSucess(data));
-        navigate('/')
+        window.navigate('/');
       }
 
     }catch(error){

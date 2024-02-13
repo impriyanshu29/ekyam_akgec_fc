@@ -3,15 +3,17 @@ import { useSelector } from "react-redux";
 import { TextInput, Button } from "flowbite-react";
 import { app } from "../../firebase/firebase";
 import {getDownloadURL, getStorage, uploadBytesResumable} from 'firebase/storage'
-import {updateFail,updateStart,updateSucess, signOutSucess } from "../../redux/function/userSlice";
+import {updateFail,clearError,updateStart,updateSucess, signOutSucess,deleteUserFail,deleteUserStart,deleteUserSucess } from "../../redux/function/userSlice";
 import { ref } from 'firebase/storage';
 import { useDispatch } from "react-redux";
 import { set } from "mongoose";
 import {Spinner} from 'flowbite-react' 
 
+import {Modal} from 'flowbite-react'; 
+
 
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,error,loading } = useSelector((state) => state.user);
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageUploadProgress,setimageUploadProgress] = useState(null)
@@ -20,6 +22,8 @@ function Profile() {
   
   const [imageFileUploadError, setimageUploadError] = useState(null)
   const fileReference = useRef();
+
+
   const handleProfileImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -86,11 +90,13 @@ function Profile() {
     }
   }
 
+//------------------------------------Update Profile------------------------------------------------------
   const handleUpdate = async (e) => {
     
      setFormData({...formData,[e.target.id]:e.target.value})
   }
 
+  const [updateMessage, setUpdateMessage] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
    
@@ -106,19 +112,64 @@ function Profile() {
     })
 
     const data = await res.json();
-    if(!res.ok){
-      dispatch(updateFail(data.error));
+  if(!res.ok){
+      dispatch(updateFail(data.error)) 
+     
     }
+    
+
     else{
       dispatch(updateSucess(data));
+      setUpdateMessage("Boom! Successfully spruced up your profile. Looking fresh and updated!");
+  
     }
+    
+    setTimeout(() => {
+      setUpdateMessage(null);
+      dispatch(clearError());
+      
+    }, 4000);
 
    } catch (error) {
     console.log(error);
    }
   }
 
-  const {loading,error} = useSelector(state => state.user);
+  const {} = useSelector(state => state.user);
+
+
+  // ------------------------------------Confirmation Model------------------------------------------------------
+    const [showModel, setShowModel] = useState(false);
+    const handleDelete = async() => {
+      setShowModel(false);
+    }
+    const handleConfirmDelete = async () => {
+      setShowModel(false);
+      try {
+       
+        dispatch(deleteUserStart());
+        const res = await fetch(`/api/user/delete/${currentUser.message.user._id}`,{
+          method:"DELETE"
+        })
+        const data = await res.json();
+        if(!res.ok){
+          dispatch(deleteUserFail('Could not delete account'));
+        }
+        else{
+          dispatch(deleteUserSucess(data));
+          
+        }
+        setTimeout(() => {
+          error(null);
+        }, 3000);
+      } catch (error) {
+       dispatch(deleteUserFail(error.message));
+        
+      }
+    }
+    const handleCancel = () => {
+      setShowModel(false);
+    }
 
   return (
     <div className=" md:w-2/4 dark:bg-[#131314]  mx-auto p-6 lg:p-20 bg-gray-100 dark:text-[#A3B2BF] rounded-md shadow-md">
@@ -172,6 +223,7 @@ function Profile() {
           className="text-gray-800 input-field"
         />
          {error && <p className='text-red-500'>{error}</p>}
+        {updateMessage && <p className='text-green-500'>{updateMessage}</p>}
         <Button
           
           type="submit"
@@ -186,14 +238,30 @@ function Profile() {
                       </>
                     ):'Update Profile'
                   }
-        </Button>
-
-       
+        </Button>       
       </form>
       <div className="text-red-500 flex justify-between mt-5">
-        <span className="cursor-pointer hover:underline">Delete Account</span>
+        <span onClick={()=>setShowModel(true)} className="cursor-pointer hover:underline">Delete Account</span>
         <span  onClick={handleLogout} className="cursor-pointer hover:underline">Sign Out</span>
       </div>
+      <Modal 
+        show={showModel}
+        onClose={handleCancel}
+        onConfirm={handleDelete}
+        popup
+        size="sm">
+      <div className="p-6">
+        <p className="text-lg font-body_font mb-4 text-[#27374D] dark:text-[#DDE6ED]">Are you seriously planning to leave me ? Our friendship is about to take a hit!!!!</p>
+        <div className="flex justify-end">
+          <Button onClick={handleCancel} className="text-gray-200 dark:bg-gray-700 dark:text-gray-200 border bg-[#27374D] border-none border-[#27374D] dark:border-[#DDE6ED] hover:bg-black hover:text-white mr-2">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} className="bg-red-500 dark:bg-red-700 dark:text-gray-200 hover:bg-red-600">
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </Modal>
     </div>
   );
 }

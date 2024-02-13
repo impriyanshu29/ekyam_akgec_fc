@@ -116,3 +116,16 @@ export const updateUser = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+
+export const deleteUser = asyncHandler(async (req, res, next) => {
+  if (req.user._id.toString() !== req.params.userId) {
+    throw new apiError(401, "Good try !! but you can't delete other's account");
+  }
+  const user = await User.findByIdAndDelete(req.params.userId);
+  if (!user) {
+    throw new apiError(404, "Hey !! I think these account is already deleted");
+  }
+  res.status(200).json({
+    message: "See you soon !!",
+  });
+});

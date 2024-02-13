@@ -11,6 +11,8 @@ import { set } from "mongoose";
 import { signOutSucess } from "../../redux/function/userSlice";
 import { useDispatch } from "react-redux";
 import { GiPodiumWinner } from "react-icons/gi";
+import { GiNotebook } from "react-icons/gi";
+
 
 import { GiBabyfootPlayers } from "react-icons/gi";
 
@@ -90,6 +92,8 @@ function Sidebar() {
               <FaUser className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Profile</span>
             </NavLink>
+
+              
             <NavLink
               to="/signin"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
@@ -102,9 +106,23 @@ function Sidebar() {
           </div>
          
           <div className="hidden md:block space-y-3">
+
             <label className="px-3 text-xs font-semibold uppercase dark:text-[#BFCDD9]  text-gray-900">
               Content
             </label>
+
+            {currentUser.message.user.isAdmin &&
+           <NavLink
+              to="/createpost"
+              className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                pathName==="/createpost" ? "bg-gray-200 text-gray-800" : ""
+              }`}
+            >
+              <GiNotebook className="h-5 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium">Create Post</span>
+            </NavLink>}
+            
+            {!currentUser.message.user.isAdmin &&
             <NavLink
               to="/"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
@@ -114,6 +132,8 @@ function Sidebar() {
               <FaHome className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Home</span>
             </NavLink>
+            }
+            {!currentUser.message.user.isAdmin &&
             <NavLink
               to="/about"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
@@ -123,6 +143,9 @@ function Sidebar() {
               <FaBox className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">About</span>
             </NavLink>
+            }
+
+            {!currentUser.message.user.isAdmin &&
             <NavLink
               to="/family"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
@@ -131,16 +154,22 @@ function Sidebar() {
             >
               <GiBabyfootPlayers className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Family</span>
-            </NavLink>
+            </NavLink>}
+
+            {!currentUser.message.user.isAdmin &&
             <NavLink
               to="/achievements"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
                 pathName === "/achievements" ? "bg-gray-200 text-gray-800" : ""
               }`}
             >
+              
               <GiPodiumWinner className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Achievements</span>
             </NavLink>
+            }   
+
+            {!currentUser.message.user.isAdmin &&
             <NavLink
               to="/dashboard?tab=profile"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
@@ -149,8 +178,11 @@ function Sidebar() {
             >
               <FaBookReader className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Blogs</span>
-            </NavLink>
+            </NavLink>}
           </div>
+
+         
+
         </nav>
         <div className="hidden md:block mt-6">
           <div className="mt-6 ">
@@ -168,7 +200,10 @@ function Sidebar() {
               </span>
               <div className="text-sm font-medium dark:text-gray-700 dark:bg-gray-200 bg-[#27374D] text-[#DDE6ED] rounded-lg px-2 py-2 ">
                 <span className="dark:text-[#65768C] dark:hover:text-[#BFCDD9]">
-                  Admin
+                 {
+                    currentUser.message.user.isAdmin ? "Admin" : "User"
+                  
+                 }
                 </span>
               </div>
             </NavLink>

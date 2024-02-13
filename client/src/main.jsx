@@ -16,6 +16,8 @@ import { ThemeProvider } from "../src/components/Theme/ThemeProvider.jsx";
 import Private_Route from "./components/PrivateRoute/Private_Route.jsx";
 import Achievments from "./pages/Achievments.jsx";
 import Family from "./pages/Family.jsx";
+import Create_Post from "./pages/Create_Post.jsx";
+import Admin_Private_Route from "./components/PrivateRoute/Admin_Private_Route.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +50,18 @@ const router = createBrowserRouter([
         path: "/about",
         element: <About />,
       },
+      
+      {
+        path: "/createpost",
+        element: <Admin_Private_Route />,
+        children: [
+          {
+            index: true,
+            element: <Create_Post/>,
+          },
+        ],
+      },
+    
       {
         path: "/family",
         element: <Family/>,
