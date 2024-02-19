@@ -3,3 +3,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*  Addiing properties to quill*/
+body{
+    height :100vh;
+}
+
+.ql-editor{
+    font-size: 1.05rem;
+    color: gray;
+    
+    
+}
+
+

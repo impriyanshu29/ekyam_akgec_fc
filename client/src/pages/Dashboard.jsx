@@ -2,13 +2,15 @@
 import {useLocation} from 'react-router-dom'
 import React, { useState,useEffect } from 'react';
 import Sidebar from '../components/Dashboard/Sidebar'
-import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import CreatePost from '../components/Post/CreatePost';
+import {useSelector} from 'react-redux'
 import Profile from '../components/Dashboard/Profile'
 
 function Dashboard() {
+  const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState('');
+  console.log(tab);
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get('tab');
@@ -21,8 +23,11 @@ function Dashboard() {
     <div className=''>
       <Sidebar/>
   </div>
+  
  
   {tab === 'profile' && <Profile/>}
+  
+  {currentUser.message.user.isAdmin && tab === 'createpost' && <CreatePost/>}
   </div>
 }
 

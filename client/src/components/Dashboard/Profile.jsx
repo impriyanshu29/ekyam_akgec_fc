@@ -10,6 +10,7 @@ import { set } from "mongoose";
 import {Spinner} from 'flowbite-react' 
 
 import {Modal} from 'flowbite-react'; 
+import '../../../src/glass.css'
 
 
 function Profile() {
@@ -172,7 +173,7 @@ function Profile() {
     }
 
   return (
-    <div className=" md:w-2/4 dark:bg-[#131314]  mx-auto p-6 lg:p-20 bg-gray-100 dark:text-[#A3B2BF] rounded-md shadow-md">
+    <div className="dark:glass-container md:w-2/4 dark:bg-[#131314]  mx-auto p-6 lg:p-20 bg-gray-100 dark:text-[#A3B2BF] rounded-md shadow-md">
       <h1 className="text-center text-3xl font-heading_font text-[#27374D] dark:text-[#DDE6ED] mb-7">
         Profile
       </h1>

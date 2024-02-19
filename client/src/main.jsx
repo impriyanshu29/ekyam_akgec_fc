@@ -18,6 +18,7 @@ import Achievments from "./pages/Achievments.jsx";
 import Family from "./pages/Family.jsx";
 import Create_Post from "./pages/Create_Post.jsx";
 import Admin_Private_Route from "./components/PrivateRoute/Admin_Private_Route.jsx";
+import Blog from "./pages/Blog.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -50,18 +51,10 @@ const router = createBrowserRouter([
         path: "/about",
         element: <About />,
       },
-      
       {
-        path: "/createpost",
-        element: <Admin_Private_Route />,
-        children: [
-          {
-            index: true,
-            element: <Create_Post/>,
-          },
-        ],
+        path:"/blog/:blogSlug",
+        element:<Blog/>
       },
-    
       {
         path: "/family",
         element: <Family/>,

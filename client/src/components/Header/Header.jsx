@@ -107,7 +107,7 @@ function Header() {
             <Dropdown.Divider />
 
             {currentUser.message.user.isAdmin  &&
-            (<Link to="/createpost">
+            (<Link to="/dashboard?tab=createpost">
               <Dropdown.Item className='hover:bg-gray-100 hover:text-gray-700 p-4'>
                 Post
               </Dropdown.Item>

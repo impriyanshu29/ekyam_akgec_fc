@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { GiPodiumWinner } from "react-icons/gi";
 import { GiNotebook } from "react-icons/gi";
 
-
+import '../../../src/glass.css'
 import { GiBabyfootPlayers } from "react-icons/gi";
 
 
@@ -54,7 +54,7 @@ function Sidebar() {
   }
   return (
     <aside
-      className={`flex md:h-screen shadow-md h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
+      className={`dark:glass-container flex md:h-screen shadow-md h-auto bg-gray-100 font-body_font  rounded-xl dark:bg-[#131314] dark:text-[#65768C]  w-full md:w-64 flex-col overflow-y-auto  px-5 py-8 ${
         currentTheme === "dark" ? "scrollbar-dark" : ""
       }`}
     >
@@ -113,9 +113,20 @@ function Sidebar() {
 
             {currentUser.message.user.isAdmin &&
            <NavLink
-              to="/createpost"
+              to="/dashboard?tab=createpost"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
-                pathName==="/createpost" ? "bg-gray-200 text-gray-800" : ""
+                tab === "createpost" ? "bg-gray-200 text-gray-800" : ""
+              }`}
+            >
+              <GiNotebook className="h-5 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium">Create Post</span>
+            </NavLink>}
+
+            {currentUser.message.user.isAdmin &&
+           <NavLink
+              to="/dashboard?tab=createpost"
+              className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                tab === "createpost" ? "bg-gray-200 text-gray-800" : ""
               }`}
             >
               <GiNotebook className="h-5 w-5" aria-hidden="true" />

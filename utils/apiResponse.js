@@ -3,7 +3,9 @@ class apiResponse{
         this.data = data;
         this.message = message;
         this.status = status;
-        this.sucess = status<400;
+        this.sucess = data < 400;
+        this.error = data >= 400;
+
     }
 }
 
