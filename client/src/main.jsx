@@ -16,8 +16,8 @@ import { ThemeProvider } from "../src/components/Theme/ThemeProvider.jsx";
 import Private_Route from "./components/PrivateRoute/Private_Route.jsx";
 import Achievments from "./pages/Achievments.jsx";
 import Family from "./pages/Family.jsx";
-import Create_Post from "./pages/Create_Post.jsx";
-import Admin_Private_Route from "./components/PrivateRoute/Admin_Private_Route.jsx";
+
+
 import Blog from "./pages/Blog.jsx";
 const router = createBrowserRouter([
   {

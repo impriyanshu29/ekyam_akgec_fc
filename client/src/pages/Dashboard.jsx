@@ -5,6 +5,7 @@ import Sidebar from '../components/Dashboard/Sidebar'
 import CreatePost from '../components/Post/CreatePost';
 import {useSelector} from 'react-redux'
 import Profile from '../components/Dashboard/Profile'
+import UpdatePost from '../components/Post/UpdatePost';
 
 function Dashboard() {
   const { currentUser } = useSelector((state) => state.user);
@@ -28,6 +29,7 @@ function Dashboard() {
   {tab === 'profile' && <Profile/>}
   
   {currentUser.message.user.isAdmin && tab === 'createpost' && <CreatePost/>}
+  {currentUser.message.user.isAdmin && tab === 'updatepost' && <UpdatePost/>}
   </div>
 }
 

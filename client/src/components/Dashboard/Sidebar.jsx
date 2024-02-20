@@ -11,7 +11,11 @@ import { set } from "mongoose";
 import { signOutSucess } from "../../redux/function/userSlice";
 import { useDispatch } from "react-redux";
 import { GiPodiumWinner } from "react-icons/gi";
-import { GiNotebook } from "react-icons/gi";
+import { PiNotebookFill } from "react-icons/pi";
+
+import { FaPencilRuler } from "react-icons/fa";
+
+
 
 import '../../../src/glass.css'
 import { GiBabyfootPlayers } from "react-icons/gi";
@@ -35,7 +39,9 @@ function Sidebar() {
   }, [location.search]);
 
   const handleLogout = async() => {
+   
     try {
+      console.log("Logging out");
       const res = await fetch(`/api/auth/logout`,{
         method:"POST", 
       })
@@ -83,7 +89,9 @@ function Sidebar() {
             <label className="px-3 text-center  text-xs font-semibold uppercase dark:text-[#BFCDD9] text-gray-900">
               Dashboard
             </label>
+            
             <NavLink
+            // also update in dashboard.jsx
               to="/dashboard?tab=profile"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
                 tab === "profile" ? "bg-gray-200 text-gray-800" : ""
@@ -102,10 +110,11 @@ function Sidebar() {
             >
               <FaSignOutAlt className="h-5 w-5" aria-hidden="true" />
               <span onClick={handleLogout} className="mx-2 text-sm font-medium">Sign Out</span>
+
             </NavLink>
           </div>
          
-          <div className="hidden md:block space-y-3">
+          <div className={` ${currentUser.message.user.isAdmin ? ' space-y-3' : 'hidden md:block space-y-3'}`}>
 
             <label className="px-3 text-xs font-semibold uppercase dark:text-[#BFCDD9]  text-gray-900">
               Content
@@ -118,19 +127,20 @@ function Sidebar() {
                 tab === "createpost" ? "bg-gray-200 text-gray-800" : ""
               }`}
             >
-              <GiNotebook className="h-5 w-5" aria-hidden="true" />
+              <PiNotebookFill className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Create Post</span>
             </NavLink>}
 
             {currentUser.message.user.isAdmin &&
            <NavLink
-              to="/dashboard?tab=createpost"
+              to="/dashboard?tab=updatepost"
               className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
-                tab === "createpost" ? "bg-gray-200 text-gray-800" : ""
+                tab === "updatepost" ? "bg-gray-200 text-gray-800" : ""
               }`}
             >
-              <GiNotebook className="h-5 w-5" aria-hidden="true" />
-              <span className="mx-2 text-sm font-medium">Create Post</span>
+             
+              <FaPencilRuler className="h-4 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium"> Update Post</span>
             </NavLink>}
             
             {!currentUser.message.user.isAdmin &&
