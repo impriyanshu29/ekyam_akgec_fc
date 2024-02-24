@@ -124,8 +124,9 @@ function CreatePost() {
     }
 
   return (
+    
     <div className="dark:glass-container md:w-2/4 p-3 min-h-screen mx-auto  bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
-      <h1 className="text-center font-heading_font text-3xl my-7 text-[#27374D] dark:text-[#DDE6ED]">
+      <h1 className="text-center font-heading_font text-3xl my-4 text-[#27374D] dark:text-[#DDE6ED]">
         Create Post
       </h1>
       <form className="flex flex-col gap-4 p-6 " onSubmit={handlePostSubmit}>
@@ -141,8 +142,8 @@ function CreatePost() {
           <Select
             onChange={(e)=> setPostData({...postData, category:e.target.value})}
           >
-            <option value="uncategorized">Select</option>
-            <option value="exercise">Exercise</option>
+            <option value="Uncategorized">Select</option>
+            <option value="Exercise">Exercise</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-2 border-dashed   border-gray-300 p-3">
@@ -221,7 +222,7 @@ function CreatePost() {
       
         <Button
           type="submit"
-          className="bg-[#27374D] dark:bg-gray-700 dark:text-gray-200"
+          className="bg-[#27374D] mt-4 md:mt-0 dark:bg-gray-700 dark:text-gray-200"
         >
           Publish
         </Button>

@@ -1,0 +1,54 @@
+import mongoose from "mongoose";
+const alumniSchema = new mongoose.Schema({
+    userId:{
+        type:String,
+        required:true,
+    },
+    name:{
+        type:String,
+        required:true,
+    },
+    image:{
+        type:String,
+        required:true,
+    },
+    about:{
+        type:String,
+        required:true
+    },
+    instagram:{
+        type:String,
+        default:"https://www.instagram.com/"
+    },
+    linkedin:{
+        type:String,
+        default:"https://www.instagram.com/"
+    },
+    slug:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    batch:{
+        type:Number,
+        required:true,
+    },
+    branch:{
+        type:String,
+        required:true,
+    },
+    company:{
+        type:String,
+    },
+   
+    location:{
+        type:String,
+    },
+    email:{
+        type:String,
+    },
+    contact:{
+        type:String,
+    }
+},{timestamps:true});
+export const Alumni =  mongoose.model("Alumni",alumniSchema);

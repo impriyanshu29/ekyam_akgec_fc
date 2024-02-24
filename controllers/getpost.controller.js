@@ -11,7 +11,7 @@ const getpost = asyncHandler(async(req,res,next)=>{
 
         //http://localhost:8000/api/post/getpost?limit=1
         //in above example we will get value = 1
-        const limit = parseInt(req.query.limit)||3;
+        const limit = parseInt(req.query.limit)||6;
 
         const sortDirection = req.query.order === 'asc' ?  1 :-1;
         const posts = await Post.find({
