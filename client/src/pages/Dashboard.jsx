@@ -10,6 +10,7 @@ import CreateAlumni from '../components/Alumni/CreateAlumni';
 import UpdateAlumni from '../components/Alumni/UpdateAlumni';
 import EditPost from '../components/Post/EditPost';
 import UserList from '../components/UserList/Users';
+import EditAlumni from '../components/Alumni/EditAlumni';
 function Dashboard() {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -37,6 +38,8 @@ function Dashboard() {
   {currentUser.message.user.isAdmin && tab === 'createAlumni' && <CreateAlumni/>}
   {currentUser.message.user.isAdmin && tab === 'updatealumni' && <UpdateAlumni/>}
   {currentUser.message.user.isAdmin && tab.startsWith('edit_post-')&& tab.length > 'edit_post-'.length && <EditPost/>}
+  {currentUser.message.user.isAdmin && tab.startsWith('edit_alumni-')&& tab.length > 'edit_alumni-'.length && <EditAlumni/>}
+
   </div>
 }
 

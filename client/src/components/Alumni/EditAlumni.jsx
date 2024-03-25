@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FileInput } from "flowbite-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,8 +11,9 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { getDownloadURL } from "firebase/storage";
 import {useNavigate} from 'react-router-dom'
+import { useSelector } from "react-redux";
 
-function CreateAlumni() {
+function EditAlumni() {
     const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(null);
   const [alumniData, setalumniData] = useState({});
@@ -23,6 +24,34 @@ function CreateAlumni() {
   const [profileCreatedProgress , setProfileCreatedProgress] = useState(null)
   const [profileCreatedError , setProfileCreatedError] = useState(null)
  
+
+  const useParams = new URLSearchParams(location.search);
+    const tabFromUrl = useParams.get("tab");
+    const {currentUser} = useSelector((state) => state.user);
+
+    useEffect(() => {
+        try{
+            if(tabFromUrl && tabFromUrl.startsWith('edit_alumni-') && tabFromUrl.length > 'edit_alumni-'.length){
+                const alumniSlug = tabFromUrl.slice('edit_alumni-'.length);
+               
+                const fetchAlumni = async () => {
+                    const res = await fetch(`/api/alumni/getAlumni?alumniId=${alumniSlug}`);
+                    
+                    const data = await res.json();
+                    console.log(data)
+                    if(!res.ok){
+                        console.log(data.error)
+                    }else{
+                        setalumniData(data.message.alumni.alumnis[0])
+                    }
+                }
+                fetchAlumni()
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }, [location.search]);
+
 
 
   // Set a range of years
@@ -73,7 +102,7 @@ function CreateAlumni() {
           }, 3000);
         },
         () => {
-
+          
           // Upload task completed successfully
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
@@ -105,21 +134,21 @@ function CreateAlumni() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("alumniData:", alumniData);
-      console.log("1st step");
-      const res = await fetch("/api/alumni/createAlumni", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(alumniData),
-      });
+    
+      const res = await fetch(`/api/alumni/editalumni/${currentUser.message.user._id}/${alumniData._id}`,
+        
+        {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(alumniData),
+          }
+      );
 
-      console.log(res)
+    
       const data = await res.json();
-      console.log(data);
-      console.log(data.status)
-      console.log(data.error)
+      
 
       if(!res.ok){
         setProfileCreatedError(data.error)
@@ -140,7 +169,7 @@ function CreateAlumni() {
     <div className="overflow-hidden  p-3 dark:glass-container md:w-2/4 md:px-14 min-h-screen mx-auto  bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md ">
       <div className="mb-4 flex items-center justify-center rounded-lg py-2">
         <h1 className="text-center font-heading_font text-3xl my-4 text-[#27374D] dark:text-[#DDE6ED]">
-          Alumni Details
+         Edit Alumni Details
         </h1>
       </div>
       <form onSubmit={handleSubmit}>
@@ -164,6 +193,7 @@ function CreateAlumni() {
                 onChange={(e) =>
                   setalumniData({ ...alumniData, firstname: e.target.value })
                 }
+                value={alumniData.firstname}
               ></input>
             </div>
 
@@ -179,6 +209,7 @@ function CreateAlumni() {
                 type="text"
                 placeholder="Enter your last name"
                 id="lastName"
+                value={alumniData.lastname}
                 onChange={(e) =>
                   setalumniData({ ...alumniData, lastname: e.target.value })
                 }
@@ -189,7 +220,7 @@ function CreateAlumni() {
               <div className="w-full">
                 <label
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  htmlFor="about"
+                  htmlFor="email"
                 >
                   About<span className="text-red-700">*</span>
                 </label>
@@ -198,6 +229,7 @@ function CreateAlumni() {
                   type="text"
                   placeholder="Write something about alumni..."
                   id="about"
+                  value={alumniData.about}
                   onChange={(e) =>
                     setalumniData({ ...alumniData, about: e.target.value })
                   }
@@ -244,35 +276,42 @@ function CreateAlumni() {
           </p>
 
           <div className="mt-2 dark:text-gray-500 font-body_font mb-2 gap-6 space-y-4 md:grid md:grid-cols-2 md:space-y-0">
-          <div className="w-full">
-                <label
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  htmlFor="batch"
-                >
-                Batch<span className="text-red-700">*</span>
-                </label>
-                <input
-                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm dark:border-gray-600 dark:placeholder:text-gray-700 text-gray-400   focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                  type="number"
-                  placeholder="Write something about alumni..."
-                  id="batch"
-                  onChange={(e) =>
-                    setalumniData({ ...alumniData, batch: e.target.value })
-                  }
-                ></input>
-              </div>
+            <div className=" flex flex-col mt-1 pt-1 w-full">
+              <label
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                htmlFor="Batch"
+              >
+                Batch <span className="text-red-700">*</span>
+              </label>
+              <DatePicker
+                selected={selectedDate}
+                dateFormat="yyyy"
+                showYearDropdown
+                yearDropdownItemNumber={10} // Number of years to show in the dropdown
+                scrollableYearDropdown
+                placeholderText="Select a year"
+                className="flex mt-1 h-10 w-full rounded-md border dark:border-gray-600 dark:placeholder:text-gray-700 text-gray-400   border-black/30 bg-transparent px-3 py-2 text-sm  focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                value={alumniData.batch}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                  const yearReal = date.getFullYear();
+                  setalumniData({ ...alumniData, batch: yearReal });
+                }}
+              />
+            </div>
             <div className="w-full">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                htmlFor="department"
+                htmlFor="firstName"
               >
-                Department
+                Branch
               </label>
               <input
                 className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm dark:border-gray-600 dark:placeholder:text-gray-700 text-gray-400   focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                 type="text"
-                placeholder="Enter department"
-                id="department"
+                placeholder="Enter branch.."
+                id="branch"
+                value={alumniData.branch}
                 onChange={(e) =>
                   setalumniData({ ...alumniData, branch: e.target.value })
                 }
@@ -288,6 +327,7 @@ function CreateAlumni() {
                   type="text"
                   placeholder="Enter present company"
                   id="company"
+                    value={alumniData.company}
                   onChange={(e) =>
                     setalumniData({ ...alumniData, company: e.target.value })
                   }
@@ -315,6 +355,7 @@ function CreateAlumni() {
                   type="text"
                   placeholder="Enter Instagram"
                   id="instagram"
+                    value={alumniData.instagram}
                   onChange={(e) =>
                     setalumniData({ ...alumniData, instagram: e.target.value })
                   }
@@ -335,6 +376,7 @@ function CreateAlumni() {
                   type="text"
                   placeholder="Enter linkedin id.."
                   id="linkedin"
+                    value={alumniData.linkedin}
                   onChange={(e) =>
                     setalumniData({ ...alumniData, linkedin: e.target.value })
                   }
@@ -355,6 +397,7 @@ function CreateAlumni() {
                   type="email"
                   placeholder="Enter email.."
                   id="email"
+                    value={alumniData.email}
                   onChange={(e) =>
                     setalumniData({ ...alumniData, email: e.target.value })
                   }
@@ -366,7 +409,7 @@ function CreateAlumni() {
                     type="submit"
                     className="bg-[#27374D] mt-4 md:mt-0 dark:bg-gray-700 dark:text-gray-200"
                   >
-                    Publish
+                    Update Alumni Profile
                   </Button>
                   {profileCreatedError && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
@@ -414,4 +457,4 @@ function CreateAlumni() {
   );
 }
 
-export default CreateAlumni;
+export default EditAlumni;

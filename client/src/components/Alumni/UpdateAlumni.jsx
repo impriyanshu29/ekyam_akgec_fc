@@ -204,7 +204,7 @@ setShowModel(false)
                           </Modal>
                           <td className="whitespace-nowrap px-4 py-4 font-sub_heading   text-right text-sm font-medium">
                             <Link
-                              to={`/update_post/${alumni._id}`}
+                               to={`/dashboard?tab=edit_alumni-${alumni._id}`}
                               className="cursor-pointer text-green-700 "
                             >
                               Edit

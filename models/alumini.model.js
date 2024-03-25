@@ -36,7 +36,7 @@ const alumniSchema = new mongoose.Schema({
     },
     branch:{
         type:String,
-        required:true,
+        
     },
     company:{
         type:String,

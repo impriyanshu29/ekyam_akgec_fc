@@ -73,9 +73,9 @@ function Blog() {
         
         <div className="grid mx-8 gap-6 gap-y-10 py-6 md:grid-cols-2 lg:grid-cols-3 ">
           {posts.map((post) => (
-            <div key={post._id} className="border cursor-pointer  dark:glass-container bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
+            <div key={post._id} className=" border cursor-pointer  dark:glass-container bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
               <Link to={`/blog/${post.slug}`}>
-              <img src={post.image} className=" aspect-video  w-full rounded-md" alt="" />
+              <img src={post.image} className=" h-[250px]  w-full rounded-md" alt="" />
               <div className="min-h-min p-3">
                 <Link to={`/search?category=${post.category}`}>
                 <p className="mt-4 hover:font-extrabold w-full text-xs font-subheading_font  leading-tight font-semibold text-gray-600">

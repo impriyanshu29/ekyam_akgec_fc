@@ -12,7 +12,10 @@ export default {
             'subheading_font':['Montserrat', 'sans-serif'],
             'body_font':['Roboto', 'sans-serif'],
             'logo_font':['Raleway', 'sans-serif'],
-        }
+        },
+        aspectRatio: {
+          '2/2': '2/2',
+        },
       },
   },
   plugins: [require('flowbite/plugin')],

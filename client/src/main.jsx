@@ -8,7 +8,7 @@ import Signin from "./pages/Signin.jsx";
 import Signup from "./pages/Signup.jsx";
 import DashBoard from "./pages/Dashboard.jsx";
 import About from "./pages/About.jsx";
-import Alumni from "./pages/Family.jsx";
+import Alumni from "./pages/Alumni.jsx";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
