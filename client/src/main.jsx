@@ -19,6 +19,8 @@ import Family from "./pages/Family.jsx";
 
 
 import Blog from "./pages/Blog.jsx";
+import TokenRefresher from "./TokenRefresher.js";
+import BlogSlug from "./pages/BlogSlug.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,12 +54,33 @@ const router = createBrowserRouter([
         element: <About />,
       },
       {
+        path: "/blog",
+        element: <Private_Route />,
+        children: [
+          {
+            index: true,
+            element: <Blog/>,
+          },
+        ],
+      },
+      
+      {
         path:"/blog/:blogSlug",
-        element:<Blog/>
+        element:<BlogSlug/>
+      },
+      {
+        path:"/alumni/:alumniSlug",
+        element:<Alumni/>
       },
       {
         path: "/family",
-        element: <Family/>,
+        element: <Private_Route />,
+        children: [
+          {
+            index: true,
+            element: <Family />,
+          },
+        ],
       },
       {
         path: "/achievements",
@@ -71,6 +94,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <PersistGate persistor={persistor}>
       <Provider store={store}>
         <ThemeProvider>
+         
           <RouterProvider router={router} />
         </ThemeProvider>
       </Provider>

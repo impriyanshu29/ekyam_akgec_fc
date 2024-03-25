@@ -7,20 +7,28 @@ import { Post } from "../models/post.model.js";
 const getpost = asyncHandler(async(req,res,next)=>{
 
         //it's a way to determine the starting point for retrieving data from a list
-        const startIndex = parseInt(req.query.startIndex)||0;
+        //Eg-> if we have 1000 post and we want to get 100 post at a time then we can use startIndex to get the post from 100 to 200
+        const page = parseInt(req.query.page)||1;
+        const limit = parseInt(req.query.limit)||6;
+        const startIndex = (page - 1) * limit;
+
 
         //http://localhost:8000/api/post/getpost?limit=1
         //in above example we will get value = 1
-        const limit = parseInt(req.query.limit)||6;
+        //http://localhost:8000/api/post/getpost?order=asc
 
         const sortDirection = req.query.order === 'asc' ?  1 :-1;
-        const posts = await Post.find({
 
+        //However, when no query parameters are provided (e.g., no userId, category, slug, etc.), all of these conditions evaluate to falsy, and their corresponding properties are not included in the object. As a result, the MongoDB query becomes an empty object {}, which effectively means "find all documents in the collection."
+
+
+        const posts = await Post.find({
+            //eg-> http://localhost:8000/api/post/getpost?userId=615f4b3b7b3b3b3b3b3b3b3b
             // the 'userId' exists in the query parameters of the web request. If 'userId' is present, it adds { userId: req.query.userId } to the object; otherwise, it doesn't add anything
             ...(req.query.userId &&{userId:req.query.userId}),
             ...(req.query.category &&{category:req.query.category}),
             ...(req.query.slug &&{slug:req.query.slug}),
-            ...(req.query.postId &&{_id:req.query.postId}),
+            ...(req.query._id &&{_id:req.query._id}),
 
             //req.query.searchTerm: This part extracts the value of the 'searchTerm' from the query parameters of a web request.
             // req.query.searchTerm && { ... }: This part checks if req.query.searchTerm exists (i.e., it's truthy). If it does, it proceeds with the code inside the curly braces { ... }. If req.query.searchTerm is not present or falsy, this part evaluates to false.

@@ -8,24 +8,24 @@ import { Modal, Button } from "flowbite-react";
 
 function UpdatePost() {
   const { currentUser } = useSelector((state) => state.user);
-  const [fullpostList, setfullpostList] = useState([]);
-  const [postList, setpostList] = useState([]);
-  const [showMore, setshowMore] = useState(true);
+  const [fullAlumniList, setfullAlumniList] = useState([]);
+  const [alumniList, setAlumniList] = useState([]);
+  const [showMore, setshowMore] = useState(false);
   const [showModel, setShowModel] = useState(false);
-  const [postIdDelete, setpostIdDelete] = useState('')
+  const [AlumniIdDelete, setAlumniIdDelete] = useState('')
  
   useEffect(() => {
-    const fetchposts = async () => {
+    const fetchAlumnis = async () => {
       try {
         const res = await fetch(
-          `/api/post/getpost`
+          "/api/alumni/getalumni"
         );
         const data = await res.json();
 
         if (res.ok) {
-          setpostList(data.message.post.posts);
-          setfullpostList(data.message.post);
-          if (data.message.post.totalPost < 7) {
+          setAlumniList(data.message.alumni.alumnis);
+          setfullAlumniList(data.message.alumni);
+          if (data.message.alumni.totalPost < 6) {
             setshowMore(false);
           }
         }
@@ -35,22 +35,24 @@ function UpdatePost() {
         console.log("====================================");
       }
     };
+
     if (currentUser.message.user.isAdmin) {
-      fetchposts();
+      fetchAlumnis();
     } 
   }, [currentUser.message.user._id, currentUser.message.user.isAdmin]); 
 
 
+
   const handleShowMore = async () => {
-    const startIndex = postList.length;
+    const startIndex = alumniList.length;
     try {
       const res = await fetch(
-        `/api/post/getpost?startIndex=${startIndex}`
+        `/api/alumni/getalumni?startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
-        setpostList((prev) => [...prev, ...data.message.post.posts]);
-        if (data.message.post.posts.length < 7) setshowMore(false);
+        setAlumniList((prev) => [...prev, ...data.message.alumni.alumnis]);
+        if (data.message.alumni.alumnis.length < 6) setshowMore(false);
       }
     } catch (error) {
       console.log("====================================");
@@ -66,8 +68,8 @@ function UpdatePost() {
     setShowModel(false)
    
     try {
-        const res = await fetch (`/api/post/deletePost/${postIdDelete}/${currentUser.message.user._id}`,
-        {
+        const res = await fetch (`/api/alumni/deletealumni/${currentUser.message.user._id}/${AlumniIdDelete}`,
+      {
             method :'DELETE'
         });
 
@@ -77,7 +79,7 @@ function UpdatePost() {
             console.log(data.error);
         }
         else{
-            setpostList((prev) => prev.filter((post) => post._id !== postIdDelete))
+            setAlumniList((prev) => prev.filter((post) => post._id !== AlumniIdDelete))
         }
     } catch (error) {
         console.log(error);
@@ -90,7 +92,7 @@ setShowModel(false)
 
   return (
     <>
-      {currentUser.message.user.isAdmin && fullpostList.totalPost > 0 ? (
+      {currentUser.message.user.isAdmin && fullAlumniList.totalAlumni > 0 ? (
         <section className="mx-auto w-full max-w-7xl px-4 py-4 ">
           <div className=" flex flex-col bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -103,20 +105,20 @@ setShowModel(false)
                           scope="col"
                           className="px-4 py-3.5 text-left text-md font-heading_font  dark:text-gray-200 text-gray-700"
                         >
-                          <span>Posts</span>
+                          <span>Alumni</span>
                         </th>
                         <th
                           scope="col"
                           className="px-12 py-3.5 text-left  text-md font-heading_font  dark:text-gray-200 text-gray-700"
                         >
-                          Title
+                          About
                         </th>
 
                         <th
                           scope="col"
                           className="px-4 py-3.5 text-left text-md font-heading_font   dark:text-gray-200 text-gray-700"
                         >
-                          Category
+                          Branch
                         </th>
 
                         <th scope="col" className="relative px-4 py-3.5">
@@ -129,44 +131,43 @@ setShowModel(false)
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-[#131315] dark:glass-container   bg-gray-100 dark:bg-[#131315] ">
-                      {postList.map((post) => (
-                        <tr key={post._id}>
+                      {alumniList.map((alumni) => (
+                        <tr key={alumni._id}>
                           <td className="whitespace-nowrap px-4 py-4">
                             <div className="flex items-center">
                               <div className="h-14 w-14 flex-shrink-0">
-                                <Link to={`/blog/${post.slug}`}>
+                                <Link to={`/alumni/${alumni.slug}`}>
                                   <img
                                     className="h-14 w-14 rounded-md  object-cover"
-                                    src={post.image}
+                                    src={alumni.image}
                                     alt=""
                                   />
                                 </Link>
                               </div>
                               <div className="ml-6">
                                 <div className="text-sm font-sub_heading   text-gray-900 dark:text-gray-100">
-                                  {new Date(
-                                    post.updatedAt
-                                  ).toLocaleDateString()}
+                                  {alumni.firstname}{" "}{alumni.lastname}
                                 </div>
-                                {/* <div className="text-sm text-gray-700">{person.email}</div> */}
+
+                                <div className="text-sm text-gray-700">{alumni.email}</div>
                               </div>
                             </div>
                           </td>
                           <td className="whitespace-nowrap px-12 py-4">
-                            <Link to={`/blog/${post.slug}`}>
+                            <Link to={`/alumni/${alumni.slug}`}>
                               <div className="text-sm font-sub_heading   text-gray-900 dark:text-gray-100 ">
-                                {post.title.slice(0, 30)}{"..."}
+                                {alumni.about.slice(0, 40)}{"... "}
                               </div>
                             </Link>
                             {/* <div className="text-sm text-gray-700">{person.department}</div> */}
                           </td>
 
                           <td className="whitespace-nowrap px-4 py-4 font-sub_heading  text-sm text-gray-700 dark:text-gray-100">
-                            {post.category}
+                            {alumni.branch}-{alumni.batch}
                           </td>
                           <td className="whitespace-nowrap px-4 py-4 font-sub_heading   text-right text-sm font-medium">
                             <span
-                              onClick={() => {setShowModel(true);setpostIdDelete(post._id)}}
+                              onClick={() => {setShowModel(true);setAlumniIdDelete(alumni._id)}}
                               className=" cursor-pointer hover:underline text-red-700"
                             >
                               Delete
@@ -183,7 +184,7 @@ setShowModel(false)
                             
                             <div className="p-6">
                               <p className="text-lg font-body_font mb-4 text-[#27374D] dark:text-[#DDE6ED]">
-                                Are you sure that you want to delete these post ??
+                                Are you sure that you want to delete Alumni Profile ??
                               </p>
                               <div className="flex justify-end">
                                 <Button
@@ -203,7 +204,7 @@ setShowModel(false)
                           </Modal>
                           <td className="whitespace-nowrap px-4 py-4 font-sub_heading   text-right text-sm font-medium">
                             <Link
-                              to={`/dashboard?tab=edit_post-${post._id}`}
+                              to={`/update_post/${alumni._id}`}
                               className="cursor-pointer text-green-700 "
                             >
                               Edit
@@ -213,7 +214,7 @@ setShowModel(false)
                       ))}
                     </tbody>
                   </table>
-                  {showMore && (
+                  {alumniList.length > 6 && showMore && (
                     <div className="flex justify-center mt-3 mb-3">
                       <button
                         onClick={handleShowMore}

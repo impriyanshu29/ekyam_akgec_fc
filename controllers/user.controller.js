@@ -109,8 +109,10 @@ export const updateUser = asyncHandler(async (req, res, next) => {
             {
             user: loggedInUser,
             },
-            "Updated sucessfully"
+            "Updated sucessfully",
+
         )
+          
         ); 
   } catch (error) {
     next(error);

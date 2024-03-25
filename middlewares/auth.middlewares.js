@@ -5,11 +5,6 @@ import apiError from '../utils/apiError.js'
 
 export const verifyJWT = asyncHandler(async(req,_,next)=>{
     try{
-       
-
-
-        
-      
         const token =  req.cookies?.acessToken|| req.header("Authorization")?.replace("Bearer ","")
         
         
@@ -31,6 +26,7 @@ export const verifyJWT = asyncHandler(async(req,_,next)=>{
         req.user = user;
         next()
     }catch(error){
+        
         throw new apiError(401,error?.message||"Not authorized, token failed")
     }
-})
+});

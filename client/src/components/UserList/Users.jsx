@@ -5,29 +5,26 @@ import { NavLink } from "react-router-dom";
 import "../../../src/glass.css";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "flowbite-react";
+import { set } from "mongoose";
 
-function UpdatePost() {
+function UserList() {
   const { currentUser } = useSelector((state) => state.user);
-  const [fullpostList, setfullpostList] = useState([]);
-  const [postList, setpostList] = useState([]);
-  const [showMore, setshowMore] = useState(true);
+  const [fullAlumniList, setfullAlumniList] = useState([]);
+  const [userList, setuserList] = useState([]);
+  const [showMore, setshowMore] = useState(false);
   const [showModel, setShowModel] = useState(false);
-  const [postIdDelete, setpostIdDelete] = useState('')
- 
+  const [AlumniIdDelete, setAlumniIdDelete] = useState("");
+  const[errorMessages,setErrorMessages] = useState(null)
+  const [successMessages,setSuccessMessages] = useState(null)
+
   useEffect(() => {
-    const fetchposts = async () => {
+    const fetchUsers = async () => {
       try {
-        const res = await fetch(
-          `/api/post/getpost`
-        );
+        const res = await fetch("/api/list/getUserList");
         const data = await res.json();
 
         if (res.ok) {
-          setpostList(data.message.post.posts);
-          setfullpostList(data.message.post);
-          if (data.message.post.totalPost < 7) {
-            setshowMore(false);
-          }
+          setuserList(data.message.users);
         }
       } catch (error) {
         console.log("====================================");
@@ -35,62 +32,113 @@ function UpdatePost() {
         console.log("====================================");
       }
     };
-    if (currentUser.message.user.isAdmin) {
-      fetchposts();
-    } 
-  }, [currentUser.message.user._id, currentUser.message.user.isAdmin]); 
 
+    if (currentUser.message.user.isAdmin) {
+      fetchUsers();
+    }
+  }, [currentUser.message.user.isAdmin]);
+
+  const handleAdminStatusChange = async (userId) => {
+    try {
+     
+        const res = await fetch(`/api/list/updateAdmin/${userId}`, {
+            method: "PUT",
+        });
+        const data = await res.json();
+        console.log(data);
+        if (res.ok) {
+            // Assuming data.isAdmin holds the new isAdmin status
+            setuserList((prev) =>
+                prev.map((user) =>
+                    user._id === userId ? { ...user, isAdmin : data.message.user.isAdmin } : user,
+                    
+                )
+            );
+          setSuccessMessages(data.status)
+          setTimeout(() => {
+            setSuccessMessages(null);
+          }, 4000);
+          
+        } else {
+            setErrorMessages(data.error);
+            setTimeout(() => {
+              setErrorMessages(null);
+            }, 4000);
+        }
+    } catch (error) {
+       setErrorMessages(error.message);
+       setTimeout(() => {
+        setErrorMessages(null);
+      }, 4000);
+    }
+};
 
   const handleShowMore = async () => {
-    const startIndex = postList.length;
+    const startIndex = userList.length;
     try {
       const res = await fetch(
-        `/api/post/getpost?startIndex=${startIndex}`
+        `/api/list/getUserList?startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
-        setpostList((prev) => [...prev, ...data.message.post.posts]);
-        if (data.message.post.posts.length < 7) setshowMore(false);
+        setuserList((prev) => [...prev, ...data.message.user.users]);
+        if (data.message.user.users.length < 6) setshowMore(false);
       }
     } catch (error) {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
+      setErrorMessages(error.message);
+      setTimeout(() => {
+        setErrorMessages(null);
+      }, 4000);
+      
     }
   };
 
-  const handleDeletePost = async() => {
+  const handleDeletePost = async () => {
     setShowModel(false);
-  }
-  const handleConfirmDelete = async()=>{
-    setShowModel(false)
-   
+  };
+  const handleConfirmDelete = async (userIdDelete) => {
+    setShowModel(false);
+
     try {
-        const res = await fetch (`/api/post/deletePost/${postIdDelete}/${currentUser.message.user._id}`,
+      const res = await fetch(
+        `/api/list/deleteUser/${userIdDelete}`,
         {
-            method :'DELETE'
-        });
-
-        const data = await res.json();
-
-        if(!res.ok){
-            console.log(data.error);
+          method: "DELETE",
         }
-        else{
-            setpostList((prev) => prev.filter((post) => post._id !== postIdDelete))
-        }
-    } catch (error) {
-        console.log(error);
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.error);
+        setErrorMessages(data.error);
+        setTimeout(() => {
+          setErrorMessages(null);
+        }, 4000);
         
+      } else {
+        setuserList((prev) =>
+          prev.filter((post) => post._id !== userIdDelete)
+        );
+        setErrorMessages(data.message);
+        setTimeout(() => {
+          setErrorMessages(null);
+        }, 4000);
+      }
+    } catch (error) {
+      setErrorMessages(error.message);
+      setTimeout(() => {
+        setErrorMessages(null);
+      }, 4000);
     }
-  }
-  const handleCancel = async () =>{
-setShowModel(false)
-  }
+  };
+  const handleCancel = async () => {
+    setShowModel(false);
+  };
 
   return (
     <>
-      {currentUser.message.user.isAdmin && fullpostList.totalPost > 0 ? (
+      {currentUser.message.user.isAdmin && userList.length > 0 ? (
         <section className="mx-auto w-full max-w-7xl px-4 py-4 ">
           <div className=" flex flex-col bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -98,25 +146,26 @@ setShowModel(false)
                 <div className="overflow-hidden border border-gray-200 dark:border-gray-600 md:rounded-lg ">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                     <thead className="bg-gray-100 dark:glass-container dark:bg-[#131315] ">
+                      
                       <tr>
                         <th
                           scope="col"
                           className="px-4 py-3.5 text-left text-md font-heading_font  dark:text-gray-200 text-gray-700"
                         >
-                          <span>Posts</span>
+                          <span>Members</span>
                         </th>
                         <th
                           scope="col"
                           className="px-12 py-3.5 text-left  text-md font-heading_font  dark:text-gray-200 text-gray-700"
                         >
-                          Title
+                          CreatedAt
                         </th>
 
                         <th
                           scope="col"
                           className="px-4 py-3.5 text-left text-md font-heading_font   dark:text-gray-200 text-gray-700"
                         >
-                          Category
+                          Admin
                         </th>
 
                         <th scope="col" className="relative px-4 py-3.5">
@@ -129,50 +178,64 @@ setShowModel(false)
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-[#131315] dark:glass-container   bg-gray-100 dark:bg-[#131315] ">
-                      {postList.map((post) => (
-                        <tr key={post._id}>
+                      {userList.map((users) => (
+                        <tr key={users._id}>
                           <td className="whitespace-nowrap px-4 py-4">
                             <div className="flex items-center">
                               <div className="h-14 w-14 flex-shrink-0">
-                                <Link to={`/blog/${post.slug}`}>
-                                  <img
-                                    className="h-14 w-14 rounded-md  object-cover"
-                                    src={post.image}
-                                    alt=""
-                                  />
-                                </Link>
+                                <img
+                                  className="h-14 w-14 rounded-md  object-cover"
+                                  src={users.coverImage}
+                                  alt=""
+                                />
                               </div>
                               <div className="ml-6">
                                 <div className="text-sm font-sub_heading   text-gray-900 dark:text-gray-100">
-                                  {new Date(
-                                    post.updatedAt
-                                  ).toLocaleDateString()}
+                                  {users.username}
                                 </div>
-                                {/* <div className="text-sm text-gray-700">{person.email}</div> */}
+
+                                <div className="text-sm text-gray-700">
+                                  {users.email}
+                                </div>
                               </div>
                             </div>
                           </td>
                           <td className="whitespace-nowrap px-12 py-4">
-                            <Link to={`/blog/${post.slug}`}>
-                              <div className="text-sm font-sub_heading   text-gray-900 dark:text-gray-100 ">
-                                {post.title.slice(0, 30)}{"..."}
-                              </div>
-                            </Link>
+                            <div className="text-sm font-sub_heading   text-gray-900 dark:text-gray-100 ">
+                              {new Date(
+                                    users.createdAt
+                                  ).toLocaleDateString()}
+                            </div>
+
                             {/* <div className="text-sm text-gray-700">{person.department}</div> */}
                           </td>
 
-                          <td className="whitespace-nowrap px-4 py-4 font-sub_heading  text-sm text-gray-700 dark:text-gray-100">
-                            {post.category}
+                          <td className="whitespace-nowrap px-4 py-4 cursor-pointer font-sub_heading text-sm text-gray-700 dark:text-gray-100">
+                            <span
+                              onClick={() =>
+                                handleAdminStatusChange(
+                                  users._id,
+                                 
+                                )
+                              }
+                              className={users.isAdmin ? 'text-green-500' : ''}
+                            >
+                              {users.isAdmin ? "Yes" : "No"}
+                            </span>
                           </td>
+
                           <td className="whitespace-nowrap px-4 py-4 font-sub_heading   text-right text-sm font-medium">
                             <span
-                              onClick={() => {setShowModel(true);setpostIdDelete(post._id)}}
+                              onClick={() => {
+                                setShowModel(true);
+                                setAlumniIdDelete(users._id);
+                              }}
                               className=" cursor-pointer hover:underline text-red-700"
                             >
                               Delete
                             </span>
                           </td>
-                          
+
                           <Modal
                             show={showModel}
                             onClose={handleCancel}
@@ -180,10 +243,10 @@ setShowModel(false)
                             popup
                             size="sm"
                           >
-                            
                             <div className="p-6">
                               <p className="text-lg font-body_font mb-4 text-[#27374D] dark:text-[#DDE6ED]">
-                                Are you sure that you want to delete these post ??
+                                Are you sure that you want to delete Alumni
+                                Profile ??
                               </p>
                               <div className="flex justify-end">
                                 <Button
@@ -193,7 +256,7 @@ setShowModel(false)
                                   Cancel
                                 </Button>
                                 <Button
-                                  onClick={handleConfirmDelete}
+                                  onClick={() => handleConfirmDelete(AlumniIdDelete)}
                                   className="bg-red-500 dark:bg-red-700 dark:text-gray-200 hover:bg-red-600"
                                 >
                                   Confirm
@@ -201,19 +264,21 @@ setShowModel(false)
                               </div>
                             </div>
                           </Modal>
-                          <td className="whitespace-nowrap px-4 py-4 font-sub_heading   text-right text-sm font-medium">
-                            <Link
-                              to={`/dashboard?tab=edit_post-${post._id}`}
-                              className="cursor-pointer text-green-700 "
-                            >
-                              Edit
-                            </Link>
-                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  {showMore && (
+                  {errorMessages && (
+    <div className='text-red-500 border border-red-500 text-center bg-red-100 p-2 rounded-md'>
+        {errorMessages}
+    </div>
+)}
+{successMessages && (
+    <div className='text-green-500 border border-green-500 bg-green-100 p-2 text-center rounded-md'>
+        {successMessages}
+    </div>
+)}
+                  {userList.length > 6 && showMore && (
                     <div className="flex justify-center mt-3 mb-3">
                       <button
                         onClick={handleShowMore}
@@ -224,6 +289,7 @@ setShowModel(false)
                     </div>
                   )}
                 </div>
+                
               </div>
             </div>
           </div>
@@ -239,4 +305,4 @@ setShowModel(false)
   );
 }
 
-export default UpdatePost;
+export default UserList;

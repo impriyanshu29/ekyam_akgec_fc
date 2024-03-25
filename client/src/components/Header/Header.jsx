@@ -23,6 +23,10 @@ function Header() {
       href: "/",
     },
     {
+      name: "BLOG",
+      href: "/blog",
+    },
+    {
       name: "ABOUT",
       href: "/about",
     },
@@ -32,8 +36,9 @@ function Header() {
     },
     {
       name: "ACHIEVMENTS",
-      href: "/achievments",
+      href: "/achievements",
     },
+
   ];
 
   const toggleMenu = () => {
@@ -61,123 +66,7 @@ function Header() {
   };
 
   return (
-    // <Navbar className= 'dark:bg-neutral-950 dark:text-[#BFCDD9] '>
-    //   <Link to="/" className={`whitespace-nowrap self-center font-logo_font text-${currentTheme === 'dark' ? '#BFCDD9' : '[#27374D]'} text-sm sm:text-xl font-semibold`}>
-    //     <span className='px-2 py-1  dark:bg-[#364559] bg-[#27374D] text-[#DDE6ED] rounded-lg'>AKGEC</span>
-    //     -FC
-    //   </Link>
-
-    //   <div className="flex gap-2 md:order-2">
-    //     <Button
-    //       className="w-12 h-10 hover:bg-gray-100 hover:text-gray-700 hidden border-0 sm:inline"
-    //       color='#F5F5F'
-    //       onClick={handleTheme}
-    //     >
-    //      {currentTheme === 'dark' ? <FaMoon /> : <IoSunnySharp />}
-    //     </Button>
-
-    //     <Button className="w-12 h-10 rounded-lg lg:hidden" color="gray">
-    //       <FaSearch />
-    //     </Button>
-
-    //     <form className="border-[#DDE6ED]">
-    //       <TextInput
-    //         type="text"
-    //         placeholder="Search ....."
-    //         rightIcon={FaSearch}
-    //         className="hidden lg:inline"
-    //       />
-    //     </form>
-
-    //     {currentUser ? (
-    //       <Dropdown
-    //         className="relative inline-block rounded-lg text-left"
-    //         arrowIcon={false}
-    //         inline
-    //         label={
-    //           <Avatar
-    //             alt="User"
-    //             img={currentUser.message.user.coverImage}
-    //             rounded
-    //           />
-    //         }
-    //       >
-    //         <Dropdown.Header className=' dark:bg-[#0F1926] bg-[#27374D] text-[#DDE6ED] font-heading_font p-4  -mt-1 border dark:border-[#0F1926] rounded-lg '>
-    //           <div className="flex p-2 items-center">
-    //             <Avatar
-    //               alt="User"
-    //               img={currentUser.message.user.coverImage}
-    //               rounded
-    //               className="mr-2"
-    //             />
-    //             <div>
-    //               <span className="block text-lg font-bold">
-    //                 {currentUser.message.user.username}
-    //               </span>
-    //               <span className="block text-sm">
-    //                 {currentUser.message.user.email}
-    //               </span>
-    //             </div>
-    //           </div>
-    //         </Dropdown.Header>
-
-    //         <Link to="/dashboard?tab=profile">
-    //           <Dropdown.Item className='hover:bg-gray-100 hover:text-gray-700 p-4'>
-    //             Profile
-    //           </Dropdown.Item>
-    //         </Link>
-
-    //         <Dropdown.Divider />
-
-    //         {currentUser.message.user.isAdmin  &&
-    //         (<Link to="/dashboard?tab=createpost">
-    //           <Dropdown.Item className='hover:bg-gray-100 hover:text-gray-700 p-4'>
-    //             Post
-    //           </Dropdown.Item>
-    //         </Link>)
-    //           }
-
-    //         <Dropdown.Divider />
-
-    //         <Dropdown.Item onClick={handleLogout} className={`hover:bg-gray-700 hover:text-${currentTheme === 'dark' ? 'red-500' : 'red-500'} p-4`}>
-    //           Logout
-    //         </Dropdown.Item>
-    //       </Dropdown>
-    //     ) : (
-    //       <Link to="/signin">
-    //         <Button className={`border-[#DDE6ED] ${currentTheme === 'dark' ? 'bg-#04080D text-[#BFCDD9] hover:text-[#27374D]' : 'bg-[#27374D] text-[#DDE6ED] hover:text-[#27374D]'} transition duration-100`} color="gray">
-    //           Sign In
-    //         </Button>
-    //       </Link>
-    //     )}
-
-    //     <Navbar.Toggle className="lg:hidden" />
-    //   </div>
-
-    //   <Navbar.Collapse >
-    //     <Navbar.Link  as="div" className='sm:text-center hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-    //       <Link to="/" className='ml-auto mr-auto block text-center ' >
-    //         Home
-    //       </Link>
-    //     </Navbar.Link>
-    //     <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-    //       <Link to="/about" className='ml-auto mr-auto block text-center '>
-    //         About
-    //       </Link>
-    //     </Navbar.Link>
-    //     <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-    //       <Link to="/family"className='ml-auto mr-auto block text-center '>
-    //         Family
-    //       </Link>
-    //     </Navbar.Link>
-    //     <Navbar.Link  as="div" className=' hover:bg-[#27374D] hover:text-[#DDE6ED] dark:hover:bg-gray-100 dark:hover:text-gray-700 p-4'>
-    //       <Link to="/achievements" className='ml-auto mr-auto block text-center '>
-    //         Achievements
-    //       </Link>
-    //     </Navbar.Link>
-
-    //   </Navbar.Collapse>
-    // </Navbar>
+    
     <div className="relative w-full bg-gray-50 dark:bg-neutral-950 ">
       <div className="mx-auto flex max-w-7xl items-center justify-between  px-4 py-2 sm:px-6 lg:px-8">
         <div className="inline-flex items-center space-x-2 ">
@@ -205,9 +94,9 @@ function Header() {
             ))}
           </ul>
         </div>
-        <div className=" flex grow justify-center">
+        <div className="ml-4 flex grow justify-center">
           <input
-            className=" flex h-10 w-28 md:w-2/4 lg:w-3/4  rounded-md dark:bg-gray-200 bg-gray-700 px-3  py-2 text-sm dark:placeholder:text-gray-700 placeholder:text-gray-200 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+            className=" flex h-10 w-32 md:w-2/4 lg:w-3/4  rounded-md dark:bg-gray-200 bg-gray-700 px-3  py-2 text-sm dark:placeholder:text-gray-700 placeholder:text-gray-200 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
             type="text"
             placeholder="Serach..."
           ></input>
@@ -281,12 +170,14 @@ function Header() {
                 )}
               </div>
             ) : (
+              <Link to="/signin">
               <button
                 type="button"
-                className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                className="rounded-md  bg-transparent px-3 my-4 py-2 dark:text-gray-200 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Sign In
               </button>
+              </Link>
             )}
           </div>
         </div>
@@ -365,7 +256,7 @@ function Header() {
                         <button
                         onClick={() => setIsMenuOpen(false)}
                       type="button"
-                      className="w-full rounded-md border dark:bg-gray-200  border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      className="w-full mb-4 rounded-md border dark:bg-gray-200  border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     >
                       Sign In
                     </button>

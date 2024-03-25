@@ -21,35 +21,36 @@ const dispatch = useDispatch();
   
   }
   
- const handleSubmit = async (e) =>{
-    
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json'
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body:JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-
+  
       const data = await res.json();
-
-      if(data.sucess === false){
-        dispatch(signInFail(data.error));
-      }
-
-      if(res.ok){
+      if (res.ok) {
         dispatch(signInSucess(data));
-        window.navigate('/');
+        navigate('/'); // Redirect to the home page after successful sign-in
+      } else {
+        // Handle specific error cases
+        if (data.error) {
+          dispatch(signInFail(data.error));
+        } else {
+          dispatch(signInFail('An error occurred.'));
+        }
       }
-
-    }catch(error){
+    } catch (error) {
+      console.error('Error signing in:', error);
       dispatch(signInFail('An error occurred.'));
     }
-
-  }
+  };
+  
   return (
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">

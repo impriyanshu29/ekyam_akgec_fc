@@ -6,7 +6,10 @@ import CreatePost from '../components/Post/CreatePost';
 import {useSelector} from 'react-redux'
 import Profile from '../components/Dashboard/Profile'
 import UpdatePost from '../components/Post/UpdatePost';
-
+import CreateAlumni from '../components/Alumni/CreateAlumni';
+import UpdateAlumni from '../components/Alumni/UpdateAlumni';
+import EditPost from '../components/Post/EditPost';
+import UserList from '../components/UserList/Users';
 function Dashboard() {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -29,7 +32,11 @@ function Dashboard() {
   {tab === 'profile' && <Profile/>}
   
   {currentUser.message.user.isAdmin && tab === 'createpost' && <CreatePost/>}
+  {currentUser.message.user.isAdmin && tab === 'userlist' && <UserList/>}
   {currentUser.message.user.isAdmin && tab === 'updatepost' && <UpdatePost/>}
+  {currentUser.message.user.isAdmin && tab === 'createAlumni' && <CreateAlumni/>}
+  {currentUser.message.user.isAdmin && tab === 'updatealumni' && <UpdateAlumni/>}
+  {currentUser.message.user.isAdmin && tab.startsWith('edit_post-')&& tab.length > 'edit_post-'.length && <EditPost/>}
   </div>
 }
 

@@ -5,6 +5,14 @@ const postSchema = new Schema({
         type:String,
         required:true,
     },
+    adminImage:{
+        type:String,
+    
+    },
+    adminName:{
+        type:String,
+        
+    },
     content:{
         type:String,
         max:500,
@@ -21,7 +29,7 @@ const postSchema = new Schema({
     },
     category:{
         type:String,
-        default:"uncategorized",
+        default:"Uncategorized",
     },
     slug:{
         type:String,

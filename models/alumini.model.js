@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 const alumniSchema = new mongoose.Schema({
-    userId:{
+   
+    firstname:{
         type:String,
         required:true,
     },
-    name:{
+    lastname:{
         type:String,
         required:true,
     },
     image:{
         type:String,
-        required:true,
+        default:"https://images.app.goo.gl/ET4EH8yBtKazoYZcA"
     },
     about:{
         type:String,
@@ -26,7 +27,7 @@ const alumniSchema = new mongoose.Schema({
     },
     slug:{
         type:String,
-        required:true,
+        
         unique:true,
     },
     batch:{
@@ -41,14 +42,11 @@ const alumniSchema = new mongoose.Schema({
         type:String,
     },
    
-    location:{
-        type:String,
-    },
+    
     email:{
         type:String,
+        required:true,
     },
-    contact:{
-        type:String,
-    }
+   
 },{timestamps:true});
 export const Alumni =  mongoose.model("Alumni",alumniSchema);

@@ -32,7 +32,7 @@ const createpost = asyncHandler (async(req, res) => {
       .split(" ")
       .join("-")
       .replace(/[^a-zA-Z0-9-]/g, "");
-    const post = await Post.create({ ...req.body, slug, userId: req.user._id });
+    const post = await Post.create({ ...req.body, slug, userId: req.user._id,adminImage:req.user.coverImage,adminName:req.user.username });
     const createdPost = await Post.findById(post._id).select("-__v");
 
     if (!createdPost) {

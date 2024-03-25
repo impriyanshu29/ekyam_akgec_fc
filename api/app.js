@@ -2,6 +2,8 @@ import express from 'express'
 import userRouter from '../routes/user.routes.js'
 import authRouter from '../routes/auth.routes.js'
 import postRouter from '../routes/post.routes.js'
+import alumniRouter from '../routes/alumni.routes.js'
+import userList from '../routes/userList.routes.js'
 import cookieParser from 'cookie-parser'
 
 
@@ -12,6 +14,8 @@ app.use(cookieParser());
 app.use("/api/user",userRouter)
 app.use("/api/auth",authRouter)
 app.use("/api/post",postRouter)
+app.use("/api/alumni",alumniRouter)
+app.use("/api/list",userList)
 export default app
 
 
