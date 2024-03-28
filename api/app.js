@@ -5,6 +5,7 @@ import postRouter from '../routes/post.routes.js'
 import alumniRouter from '../routes/alumni.routes.js'
 import userList from '../routes/userList.routes.js'
 import cookieParser from 'cookie-parser'
+import achievment from '../routes/achievment.routes.js'
 
 
 const app = express()
@@ -16,6 +17,7 @@ app.use("/api/auth",authRouter)
 app.use("/api/post",postRouter)
 app.use("/api/alumni",alumniRouter)
 app.use("/api/list",userList)
+app.use("/api/achievment",achievment)
 export default app
 
 

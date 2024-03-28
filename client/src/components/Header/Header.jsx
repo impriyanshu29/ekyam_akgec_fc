@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Navbar, TextInput, Dropdown, Avatar } from "flowbite-react";
 import { FaSearch, FaMoon, FaSun } from "react-icons/fa";
@@ -8,6 +8,8 @@ import { IoSunnySharp } from "react-icons/io5";
 import { signOutSucess } from "../../redux/function/userSlice";
 import { IoMdMenu } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
+import {useNavigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -15,7 +17,26 @@ function Header() {
   const { currentTheme } = useSelector((state) => state.theme);
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("")
+  const  [searchResults, setSearchResults] = useState([])
   const [showDropdown, setShowDropdown] = React.useState(false);
+const location = useLocation()
+const navigate = useNavigate()
+
+  
+
+  const handleSearchResult = (e) => {
+    e.preventDefault()
+
+   
+    const urlParams =new URLSearchParams(location.search);
+   
+    urlParams.set('searchTerm', searchTerm)
+    //eg: /search?searchTerm=hello
+    const searchValue = urlParams.toString()
+    navigate(`/search?${searchValue}`)
+  }
+
 
   const menuItems = [
     {
@@ -94,13 +115,22 @@ function Header() {
             ))}
           </ul>
         </div>
-        <div className="ml-4 flex grow justify-center">
-          <input
-            className=" flex h-10 w-32 md:w-2/4 lg:w-3/4  rounded-md dark:bg-gray-200 bg-gray-700 px-3  py-2 text-sm dark:placeholder:text-gray-700 placeholder:text-gray-200 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-            type="text"
-            placeholder="Serach..."
-          ></input>
-        </div>
+        <form onSubmit={handleSearchResult} className="ml-4 flex justify-center">
+  <fieldset>
+    <label htmlFor="searchInput" className="sr-only">Search</label>
+    <input
+      id="searchInput"
+      className="flex h-10 w-32 md:w-2/4 lg:w-3/4 rounded-md dark:bg-gray-200 bg-gray-700 px-3 py-2 text-sm dark:placeholder:text-gray-700 placeholder:text-gray-200 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+      type="text"
+      value={searchTerm}
+      placeholder="Search..."
+      
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+    
+  </fieldset>
+</form>
+
         <div className=" flex gap-3 space-x-2 ">
           <div className="">
           

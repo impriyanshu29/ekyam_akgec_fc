@@ -11,6 +11,10 @@ import UpdateAlumni from '../components/Alumni/UpdateAlumni';
 import EditPost from '../components/Post/EditPost';
 import UserList from '../components/UserList/Users';
 import EditAlumni from '../components/Alumni/EditAlumni';
+import UpdateAchievement from '../components/Achievements/UpdateAchievments';
+import CreateAchievements from '../components/Achievements/CreateAchievements';
+import EditAchievements from '../components/Achievements/EditAchievements';
+
 function Dashboard() {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -37,9 +41,11 @@ function Dashboard() {
   {currentUser.message.user.isAdmin && tab === 'updatepost' && <UpdatePost/>}
   {currentUser.message.user.isAdmin && tab === 'createAlumni' && <CreateAlumni/>}
   {currentUser.message.user.isAdmin && tab === 'updatealumni' && <UpdateAlumni/>}
+  {currentUser.message.user.isAdmin && tab === 'updateAchievements' && <UpdateAchievement/>}
+  {currentUser.message.user.isAdmin && tab === 'createAchievements' && <CreateAchievements/>}
   {currentUser.message.user.isAdmin && tab.startsWith('edit_post-')&& tab.length > 'edit_post-'.length && <EditPost/>}
   {currentUser.message.user.isAdmin && tab.startsWith('edit_alumni-')&& tab.length > 'edit_alumni-'.length && <EditAlumni/>}
-
+{currentUser.message.user.isAdmin && tab.startsWith('edit_achievement')&& tab.length > 'edit_achievement-'.length && <EditAchievements/>}
   </div>
 }
 

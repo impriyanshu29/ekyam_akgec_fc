@@ -157,7 +157,7 @@ function EditAlumni() {
       }
       else{
         setProfileCreatedError(null)
-        console.log(data.status)
+        
         setProfileCreatedProgress(data.status)
         navigate(`/alumni/${data.message.alumni.slug}`)
       }

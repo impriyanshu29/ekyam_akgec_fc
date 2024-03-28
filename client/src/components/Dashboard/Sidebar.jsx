@@ -17,6 +17,8 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { GiNotebook } from "react-icons/gi";
 import { IoIosPeople } from "react-icons/io";
 
+import { FaMedal } from "react-icons/fa";
+import { GiMedallist } from "react-icons/gi";
 
 
 import { FaPencilRuler } from "react-icons/fa";
@@ -33,6 +35,7 @@ function Sidebar() {
   const [pathName, setPathName] = useState("");
   const [alumnishowDropDown, setalumniShowDropdown] = useState(false);
 const[showDropDown,setShowDropdown] = useState(false)
+const[showDropDownAchievements,setShowDropdownAchievements] = useState(false)
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
@@ -221,6 +224,51 @@ const[showDropDown,setShowDropdown] = useState(false)
               </div>
             ) : null}
 
+          {currentUser.message.user.isAdmin ? (
+              <div className="mx-4 flex flex-col gap-2">
+                <button
+                  className="flex font-heading_font  items-center cursor-pointer"
+                  onClick={() => setShowDropdownAchievements(!showDropDownAchievements)}
+                >
+                  <GiMedallist
+                    className="h-5 w-5 inline-block "
+                    aria-hidden="true"
+                  />
+                  <h1 className="ml-2 text-gray-600 ">Achievements</h1>
+                  <IoIosArrowDropdownCircle
+                    className="h-5 w-5 ml-2"
+                    aria-hidden="true"
+                  />
+                </button>
+                {showDropDownAchievements && (
+                  <div className="pl-8">
+                    <NavLink
+                      to="/dashboard?tab=createAchievements"
+                      className={`flex transform items-center rounded-lg gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                        tab === "createAchievements" ? "bg-gray-200 text-gray-800" : ""
+                      }`}
+                    >
+                      <FaMedal className="h-4 w-5" aria-hidden="true" />
+                      <span className="text-sm font-medium">Create Achievementst</span>
+                    </NavLink>
+                    <NavLink
+                      to="/dashboard?tab=updateAchievements"
+                      className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+                        tab === "updateAcievements" ? "bg-gray-200 text-gray-800" : ""
+                      }`}
+                    >
+                      <FaPencilRuler className="h-4 w-5" aria-hidden="true" />
+                      <span className="mx-2 text-sm font-medium">
+                        {" "}
+                        Update Achievements
+                      </span>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
+
             {currentUser.message.user.isAdmin && (
                <NavLink
                to="/dashboard?tab=userlist"
@@ -230,7 +278,7 @@ const[showDropDown,setShowDropdown] = useState(false)
                   : ""
                }`}
              >
-               <IoIosPeople className="h-5 w-5 text-lg  " aria-hidden="true" />
+               <IoIosPeople className="h-5 w-5 font-bold text-lg " aria-hidden="true" />
                <span className="mx-3 text-base font-heading_font ">Members</span>
              </NavLink>
             )}

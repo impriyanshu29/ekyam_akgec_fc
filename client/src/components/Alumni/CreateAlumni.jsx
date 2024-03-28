@@ -99,14 +99,13 @@ function CreateAlumni() {
     } catch (error) {
       setAlumniImageUploadError(error);
     }
-  };
+  }; 
   //  ----------------------------------------------------------------------------
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();                                                                   
     try {
-      console.log("alumniData:", alumniData);
-      console.log("1st step");
+      
       const res = await fetch("/api/alumni/createAlumni", {
         method: "POST",
         headers: {
@@ -115,11 +114,9 @@ function CreateAlumni() {
         body: JSON.stringify(alumniData),
       });
 
-      console.log(res)
+      
       const data = await res.json();
-      console.log(data);
-      console.log(data.status)
-      console.log(data.error)
+    
 
       if(!res.ok){
         setProfileCreatedError(data.error)
@@ -128,7 +125,7 @@ function CreateAlumni() {
       }
       else{
         setProfileCreatedError(null)
-        console.log(data.status)
+        
         setProfileCreatedProgress(data.status)
         navigate(`/alumni/${data.message.alumni.slug}`)
       }

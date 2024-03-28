@@ -60,12 +60,13 @@ export const getAlumni = asyncHandler(async(req,res,next)=>{
     const alumnis = await Alumni.find({
       ...(req.query.alumniId && {_id:req.query.alumniId}),
       ...(req.query.slug &&{slug:req.query.slug}),
+      ...(req.query.batch &&{batch:req.query.batch}),
       ...(req.query.searchAlumni &&{
         $or:[
-          {fullname:{$regex:req.query.searchAlumni, $options:'i'}},
+          {firstname:{$regex:req.query.searchAlumni, $options:'i'}},
           {lastname:{$regex:req.query.searchAlumni, $options:'i'}},
                 
-        ]
+        ],
       })
     }).sort ({updateAt:sortDirection}).skip(startIndex).limit(limit);
 

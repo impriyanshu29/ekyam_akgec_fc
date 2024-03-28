@@ -21,6 +21,7 @@ import Family from "./pages/Family.jsx";
 import Blog from "./pages/Blog.jsx";
 import TokenRefresher from "./TokenRefresher.js";
 import BlogSlug from "./pages/BlogSlug.jsx";
+import Search from "./pages/Search.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
         path:"/blog/:blogSlug",
         element:<BlogSlug/>
       },
+
+      {
+        path:"/search",
+        element:<Search/>
+      },
       {
         path:"/alumni/:alumniSlug",
         element:<Alumni/>
@@ -82,10 +88,17 @@ const router = createBrowserRouter([
           },
         ],
       },
+      
       {
         path: "/achievements",
-        element: <Achievments />,
-      }
+        element: <Private_Route />,
+        children: [
+          {
+            index: true,
+            element: <Achievments />,
+          },
+        ],
+      },
     ],
   },
 ]);
