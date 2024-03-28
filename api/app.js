@@ -6,10 +6,11 @@ import alumniRouter from '../routes/alumni.routes.js'
 import userList from '../routes/userList.routes.js'
 import cookieParser from 'cookie-parser'
 import achievment from '../routes/achievment.routes.js'
-
+import path from 'path';
 
 const app = express()
 
+const __dirname = path.resolve();
 app.use(express.json())
 app.use(cookieParser());
 app.use("/api/user",userRouter)
@@ -18,6 +19,14 @@ app.use("/api/post",postRouter)
 app.use("/api/alumni",alumniRouter)
 app.use("/api/list",userList)
 app.use("/api/achievment",achievment)
+
+
+
+app.use(express.static(path.join(__dirname, '/client/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+);
+
 export default app
 
 
