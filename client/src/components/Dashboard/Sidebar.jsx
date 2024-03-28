@@ -49,7 +49,7 @@ const[showDropDownAchievements,setShowDropdownAchievements] = useState(false)
   const handleLogout = async () => {
     try {
       console.log("Logging out");
-      const res = await fetch(`/api/auth/logout`, {
+      const res = await fetch('/api/auth/logout', {
         method: "POST",
       });
       const data = await res.json();
@@ -105,17 +105,14 @@ const[showDropDownAchievements,setShowDropdownAchievements] = useState(false)
               <span className="mx-2 text-sm font-medium">Profile</span>
             </NavLink>
 
-            <NavLink
-              to="/signin"
-              className={`flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
+            <div className={`flex transform  cursor-pointer items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:underline ${
                 pathName === "/signin" ? "bg-gray-200 text-gray-800" : ""
-              }`}
-            >
+              }`} onClick={handleLogout} >
               <FaSignOutAlt className="h-5 w-5" aria-hidden="true" />
-              <span onClick={handleLogout} className="mx-2 text-sm font-medium">
+              <button  className="mx-2 text-sm font-medium">
                 Sign Out
-              </span>
-            </NavLink>
+              </button>
+              </div>
           </div>
 
           <div
