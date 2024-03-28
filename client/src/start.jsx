@@ -12,7 +12,7 @@ import Alumni from "./pages/Alumni.jsx";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
-import { ThemeProvider } from "../src/components/Theme/ThemeProvider.jsx";
+import { ThemeProvider } from "./components/Theme/ThemeProvider.jsx";
 import Private_Route from "./components/PrivateRoute/Private_Route.jsx";
 import Achievments from "./pages/Achievments.jsx";
 import Family from "./pages/Family.jsx";
