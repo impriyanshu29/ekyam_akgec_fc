@@ -98,9 +98,9 @@ const handleSearch = (e) =>{
         </div> */}
         {/* posts */}
 
-        <div className="grid mx-10 gap-4 gap-y-10 py-6 md:grid-cols-2 lg:grid-cols-3 ">
+        <div className="grid   gap-1 gap-y-10 py-6 md:grid-cols-2 lg:grid-cols-3 ">
           {posts.map((post) => (
-            <div key={post._id} className="w-[320px] border cursor-pointer  dark:glass-container bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
+            <div key={post._id} className="w-[320px] mx-auto border cursor-pointer  dark:glass-container bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
               <img
                 src={post.image}
                 alt={post.firstname}
