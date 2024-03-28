@@ -22,9 +22,9 @@ app.use("/api/achievment",achievment)
 
 
 
-app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 app.get('*', (req, res) =>
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
 );
 
 export default app
