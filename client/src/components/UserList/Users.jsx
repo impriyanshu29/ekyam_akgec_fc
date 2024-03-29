@@ -11,7 +11,8 @@ function UserList() {
   const { currentUser } = useSelector((state) => state.user);
   const [fullAlumniList, setfullAlumniList] = useState([]);
   const [userList, setuserList] = useState([]);
-  const [showMore, setshowMore] = useState(false);
+  const [fullUser,setFullUser] = useState([])
+  const [showMore, setshowMore] = useState(true);
   const [showModel, setShowModel] = useState(false);
   const [AlumniIdDelete, setAlumniIdDelete] = useState("");
   const[errorMessages,setErrorMessages] = useState(null)
@@ -24,7 +25,8 @@ function UserList() {
         const data = await res.json();
 
         if (res.ok) {
-          setuserList(data.message.users);
+          setuserList(data.message.users.users);
+          setFullUser(data.message.users.totalUsers);
         }
       } catch (error) {
         console.log("====================================");
@@ -81,8 +83,9 @@ function UserList() {
       );
       const data = await res.json();
       if (res.ok) {
-        setuserList((prev) => [...prev, ...data.message.user.users]);
+        setuserList((prev) => [...prev, ...data.message.users.users]);
         if (data.message.user.users.length < 6) setshowMore(false);
+        setshowMore(false)
       }
     } catch (error) {
       setErrorMessages(error.message);
@@ -138,7 +141,7 @@ function UserList() {
 
   return (
     <>
-      {currentUser.message.user.isAdmin && userList.length > 0 ? (
+      {currentUser.message.user.isAdmin && fullUser > 0 ? (
         <section className="mx-auto w-full max-w-7xl px-4 py-4 ">
           <div className=" flex flex-col bg-gray-100 dark:bg-[#131315] rounded-lg shadow-md">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -278,7 +281,7 @@ function UserList() {
         {successMessages}
     </div>
 )}
-                  {userList.length > 6 && showMore && (
+                  {fullUser > 6 && showMore && (
                     <div className="flex justify-center mt-3 mb-3">
                       <button
                         onClick={handleShowMore}
