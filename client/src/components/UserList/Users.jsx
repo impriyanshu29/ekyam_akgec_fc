@@ -82,16 +82,17 @@ function UserList() {
         `/api/list/getUserList?startIndex=${startIndex}`
       );
       const data = await res.json();
+      
+    
       if (res.ok) {
-
-        if (data.message.user.users.length < 6) 
-        {setshowMore(false);
+        if (data.message.users.users.length < 6) {
+          setshowMore(false);
         }
         setuserList((prev) => [...prev, ...data.message.users.users]);
        
-       
       }
     } catch (error) {
+      console.log(error)
       setErrorMessages(error.message);
       setTimeout(() => {
         setErrorMessages(null);
@@ -288,6 +289,7 @@ function UserList() {
                   {fullUser > 6 && showMore && (
                     <div className="flex justify-center mt-3 mb-3">
                       <button
+                        
                         onClick={handleShowMore}
                         className="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 transition duration-300 ease-in-out transform hover:scale-105"
                       >

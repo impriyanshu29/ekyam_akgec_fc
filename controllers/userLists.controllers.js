@@ -1,6 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { User } from "../models/user.model.js";
+
 const userLists = asyncHandler(async(req,res,next)=>{
     const startIndex = parseInt(req.query.startIndex)||0;
     const limit = parseInt(req.query.limit)||6;
@@ -8,7 +9,7 @@ const userLists = asyncHandler(async(req,res,next)=>{
     const totalUsers = await User.countDocuments();
     const users = await User.find()
         .select("-password -refreshToken")
-        .sort({ updatedAt: sortDirection }) 
+        .sort({ createdAt: sortDirection }) 
         .skip(startIndex)
         .limit(limit);
 
