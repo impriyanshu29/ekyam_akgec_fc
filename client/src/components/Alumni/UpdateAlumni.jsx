@@ -10,7 +10,7 @@ function UpdatePost() {
   const { currentUser } = useSelector((state) => state.user);
   const [fullAlumniList, setfullAlumniList] = useState([]);
   const [alumniList, setAlumniList] = useState([]);
-  const [showMore, setshowMore] = useState(false);
+  const [showMore, setshowMore] = useState(true);
   const [showModel, setShowModel] = useState(false);
   const [AlumniIdDelete, setAlumniIdDelete] = useState('')
  
@@ -46,14 +46,16 @@ function UpdatePost() {
   const handleShowMore = async () => {
     const startIndex = alumniList.length;
     try {
-      const res = await fetch(
-        `/api/alumni/getalumni?startIndex=${startIndex}`
-      );
+      const res = await fetch(`/api/alumni/getalumni?startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
+        if (data.message.alumni.alumnis.length < 6) {
+          setshowMore(false);
+        }
         setAlumniList((prev) => [...prev, ...data.message.alumni.alumnis]);
-        if (data.message.alumni.alumnis.length < 6) setshowMore(false);
       }
+   
+  
     } catch (error) {
       console.log("====================================");
       console.log(error);
@@ -80,6 +82,7 @@ function UpdatePost() {
         }
         else{
             setAlumniList((prev) => prev.filter((post) => post._id !== AlumniIdDelete))
+            setShowModel(false)
         }
     } catch (error) {
         console.log(error);
@@ -214,7 +217,7 @@ setShowModel(false)
                       ))}
                     </tbody>
                   </table>
-                  {alumniList.length > 6 && showMore && (
+                  {fullAlumniList.totalAlumni> 6 && showMore && (
                     <div className="flex justify-center mt-3 mb-3">
                       <button
                         onClick={handleShowMore}

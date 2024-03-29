@@ -83,9 +83,13 @@ function UserList() {
       );
       const data = await res.json();
       if (res.ok) {
+
+        if (data.message.user.users.length < 6) 
+        {setshowMore(false);
+        }
         setuserList((prev) => [...prev, ...data.message.users.users]);
-        if (data.message.user.users.length < 6) setshowMore(false);
-        setshowMore(false)
+       
+       
       }
     } catch (error) {
       setErrorMessages(error.message);

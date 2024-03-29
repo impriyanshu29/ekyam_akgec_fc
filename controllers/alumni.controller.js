@@ -54,7 +54,10 @@ export const createAlumin =asyncHandler(async(req,res)=>{
 export const getAlumni = asyncHandler(async(req,res,next)=>{
         const page = parseInt(req.query.page)||1;
         const limit = parseInt(req.query.limit)||6;
-        const startIndex = (page - 1) * limit;
+        let startIndex = (page - 1) * limit;
+        if (req.query.startIndex) {
+          startIndex = parseInt(req.query.startIndex);
+      }
 
     const sortDirection = req.query.order === 'asc'? 1:-1;
     const alumnis = await Alumni.find({
@@ -68,7 +71,7 @@ export const getAlumni = asyncHandler(async(req,res,next)=>{
                 
         ],
       })
-    }).sort ({updateAt:sortDirection}).skip(startIndex).limit(limit);
+    }).sort({createdAt:sortDirection}).skip(startIndex).limit(limit);
 
     const totalAlumni = await Alumni.countDocuments();
     return res.status(201).json(

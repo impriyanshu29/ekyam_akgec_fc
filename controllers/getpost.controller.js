@@ -10,7 +10,10 @@ const getpost = asyncHandler(async(req,res,next)=>{
         //Eg-> if we have 1000 post and we want to get 100 post at a time then we can use startIndex to get the post from 100 to 200
         const page = parseInt(req.query.page)||1;
         const limit = parseInt(req.query.limit)||6;
-        const startIndex = (page - 1) * limit;
+        let startIndex = (page - 1) * limit;
+        if (req.query.startIndex) {
+          startIndex = parseInt(req.query.startIndex);
+      }
 
 
         //http://localhost:8000/api/post/getpost?limit=1

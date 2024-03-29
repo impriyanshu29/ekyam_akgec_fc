@@ -86,7 +86,7 @@ function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between dark:text-[#65768C]">
           <span className="text-sm text-gray-500 sm:text-center">
             © {year} -
-            <a href="https://www.instagram.com" className="hover:underline ">
+            <a href="https://www.instagram.com/akgec_fc/?hl=en" className="hover:underline ">
               <span className="text-gray-900 font-medium dark:text-[#BFCDD9] hover:text-[#27374D]"> AKGEC-FC </span>
             </a>
             . All Rights Reserved.
@@ -112,7 +112,7 @@ function Footer() {
                 }}
                 />
             </Link>
-            <Link to="#" className="text-gray-500 hover:text-[#27374D]">
+            <Link to="https://github.com/impriyanshu29" className="text-gray-500 hover:text-[#27374D]">
              <FaGithub
              style={{
               fontSize: '1.5rem', 
