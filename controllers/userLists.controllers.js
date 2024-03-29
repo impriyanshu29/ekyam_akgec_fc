@@ -5,12 +5,13 @@ const userLists = asyncHandler(async(req,res,next)=>{
     const startIndex = parseInt(req.query.startIndex)||0;
     const limit = parseInt(req.query.limit)||6;
     const sortDirection = req.query.order === 'asc' ?  1 :-1;
+    const totalUsers = await User.countDocuments();
     const users = await User.find().select("-password  -refreshToken").sort ({updateAt:sortDirection}).skip(startIndex).limit(limit);;
     return res.status(201).json(
         new apiResponse(
           201,
           {
-            users: users,
+            users:{ users,totalUsers}
           },
           "Users fetched successfully"
         )
